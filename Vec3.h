@@ -2,7 +2,7 @@
 
 #include "math.h"
 
-//2次元ベクトル
+//3次元ベクトル
 class Vec3
 {
 public:

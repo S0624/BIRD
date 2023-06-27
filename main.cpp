@@ -1,24 +1,33 @@
 #include "DxLib.h"
+#include"Player.h"
+#include"Camera.h"
 
 #include "math.h"
 #include "game.h"
 
 // プログラムは WinMain から始まります
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
     // windowモード設定
     ChangeWindowMode(Game::kWindowMode);
 
     // ウインドウ名設定
-    SetMainWindowText("ゲーム名");
+    SetMainWindowText("BIRD");
 
     // 画面サイズの設定
     SetGraphMode(Game::kScreenWindth, Game::kScreenHeight, Game::kColorDepth);
+    SetWindowSizeChangeEnableFlag(true);//ウィンドウモードの拡大縮小（サイズ変更）
+    SetAlwaysRunFlag(true);
 
     if (DxLib_Init() == -1)        // ＤＸライブラリ初期化処理
     {
         return -1;            // エラーが起きたら直ちに終了
     }
+    Player* pPlayer;
+    pPlayer = new Player();  
+    
+    Camera* pCamera;
+    pCamera = new Camera();
 
     // ダブルバッファモード
     SetDrawScreen(DX_SCREEN_BACK);
@@ -29,6 +38,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         // 画面のクリア
         ClearDrawScreen();
+
+        // デバッグ描画
+#if _DEBUG
+        //(仮決め)グリッドの表示
+        VECTOR startY = VGet(0, 0.0f, -100.0f);		//線の始点
+        VECTOR endY = VGet(0, 0.0f, 100.0f);		//線の終点
+        DrawLine3D(startY, endY, 0x7fffd4);			//あお
+
+        VECTOR startX = VGet(-100.0f, 0.0f, 0.0f);		//線の始点
+        VECTOR endX = VGet(100.0f, 0.0f, -0.0f);			//線の終点
+        DrawLine3D(startX, endX, 0xdc143c);			//あか
+#endif // kWindowMode
+
+
+        pPlayer->Update();
+        pCamera->Update(*pPlayer);
+
+        pPlayer->Draw();
 
         // 裏画面を表画面を入れ替える
         ScreenFlip();
