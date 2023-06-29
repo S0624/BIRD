@@ -36,8 +36,8 @@ Camera::~Camera()
 void Camera::Update(const Player& player)
 {
 	VECTOR playerPos = player.GetPos();
-	VECTOR cameraPos = VGet(playerPos.x, playerPos.y + 50.0f, playerPos.z - 100.0f);
-	//VECTOR cameraPos = VGet(playerPos.x, playerPos.y + 3.0f, playerPos.z - 10.0f);
+	VECTOR cameraPos = VGet(playerPos.x + 60 ,  40.0f, playerPos.z  - 100.0f);// 縦に追いかけない
+	//VECTOR cameraPos = VGet(playerPos.x, playerPos.y + 50.0f, playerPos.z - 100.0f);// プレイヤーを追いかけるカメラ
 
 	// 注視する視点は、カメラと平行にまっすぐz=0地点
 	VECTOR lookPos = VGet(cameraPos.x, cameraPos.y, 0.0f);
@@ -46,6 +46,6 @@ void Camera::Update(const Player& player)
 
 	// カメラに位置を反映.
 	SetCameraPositionAndTarget_UpVecY(m_pos, lookPos);
-	//printfDx("%f %f %f\n", pos.x, pos.y, pos.z);
+	//printfDx("%f %f %f\n", m_pos.x, m_pos.y, m_pos.z);
 
 }

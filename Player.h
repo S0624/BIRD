@@ -8,11 +8,11 @@
 class Player
 {
 public:
-	Player();				// コンストラクタ.
-	~Player();				// デストラクタ.
+	Player();				// コンストラクタ
+	~Player();				// デストラクタ
 
-	void Update();			// 更新.
-	void Draw();			// 描画.
+	void Update();			// 更新
+	void Draw();			// 描画
 
 	void PlayAnimation();	// アニメーションの処理
 	void DetachAnimation(); // アニメーションを切り替える
