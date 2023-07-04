@@ -1,11 +1,11 @@
-#include "DxLib.h"
-#include"Player.h"
-#include"Camera.h"
-#include"Map.h"
-#include"BackGround.h"
+#include "Common.h"
+#include"Object/Player.h"
+#include"Camera/Camera.h"
+#include"Stage/Map.h"
+#include"Object/BackGround.h"
+#include"Scene/SceneManager.h"
 
 #include "math.h"
-#include "game.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
@@ -25,16 +25,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
     {
         return -1;            // エラーが起きたら直ちに終了
     }
-    Player* pPlayer;
-    pPlayer = new Player();
-    Map* pMap;
-    pMap = new Map();
-    pMap->Load();
-    BackGround* pBack;
-    pBack = new BackGround();
-    
-    Camera* pCamera;
-    pCamera = new Camera();
+
+    SceneManager* pScene;
+    pScene = new SceneManager;
+    pScene->Init();
 
     // ダブルバッファモード
     SetDrawScreen(DX_SCREEN_BACK);
@@ -70,16 +64,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         }
 #endif // kWindowMode
 
-
-        pPlayer->Update();
-        pMap->Update();
-        pBack->Update();
-        pCamera->Update(*pPlayer);
-
-        //pBack->Draw();
-        pPlayer->Draw();
-        pMap->Draw();
-
+        pScene->Update();
+        pScene->Draw();
         // 裏画面を表画面を入れ替える
         ScreenFlip();
 
@@ -92,7 +78,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
         }
     }
-
+    pScene->End();
+    delete(pScene);
     DxLib_End();                // ＤＸライブラリ使用の終了処理
 
     return 0;                // ソフトの終了
