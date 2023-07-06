@@ -26,8 +26,9 @@ Player::Player()
 {
 	// ３Ｄモデルの読み込み
 	m_modelHandle = MV1LoadModel("Data/Model/Bee.mv1");
+	//m_modelHandle = MV1LoadModel("Data/Model/Robot.mv1");
 	assert(m_modelHandle >= 0);
-	m_pos = VGet(0, -10, 0);
+	m_pos = VGet(0, 0, 0);
 	m_velocity = VGet(0, 0, 0);
 	m_dir = VGet(0, 0, 1);
 
@@ -112,14 +113,17 @@ void Player::Update()
 	}
 
 
+	// HACK あとでモデルクラスを作成して処理をきれいにする
+	
 	// 3Dモデルのスケール決定
 	MV1SetScale(m_modelHandle, VGet(m_scale, m_scale, m_scale));
 
 	// ３Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_pos);
 
-	// 回転
-	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, -89.5f, 0.0f));
+	// 回転（モデルを横に向かせる）
+	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, DX_PI_F * -0.5, 0.0f));
+
 }
 
 /// <summary>
@@ -132,7 +136,7 @@ void Player::Draw()
 
 	// デバッグ描画
 #if _DEBUG
-	DrawFormatString(0,0,0x00ff00,"Z飛ぶ\nX死亡");
+	DrawFormatString(400,0,0x00ff00,"Z飛ぶ\nX死亡\nCカメラ--\nAカメラ++");
 	//printfDx("%f %f %f\n", pos.x, pos.y, pos.z);
 	DrawFormatString(400, 100, 0xffffff, "%f,%f,%f", m_pos.x, m_pos.y, m_pos.z);
 #endif // kWindowMode

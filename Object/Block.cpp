@@ -8,11 +8,15 @@
 Block::Block()
 	: m_modelHandle(-1),
 	m_speed(3.0f),
-	m_scale(0.05f)	// スケール
-
+	m_scale(0.05f),	// スケール
+	m_blockX(0),
+	m_blockY(0)
 {
 	// ３Ｄモデルの読み込み
 	m_modelHandle = MV1LoadModel("Data/Model/Block.mv1");
+	//m_modelHandle = MV1LoadModel("Data/Model/Robot.mv1");
+	m_modelHandle = MV1DuplicateModel(m_modelHandle);
+	
 	assert(m_modelHandle >= 0);
 	
 	m_pos = VGet(50, -10, 0);
@@ -50,7 +54,8 @@ void Block::Update()
 		//		if (test[j][i] == 0)
 		//		{
 					//m_pos = VGet(50 + (testX * 15), Game::kScreenHeight - (testY * 15), 0);
-	m_pos = VGet(50 + (testX * 9), -10 + (testY * 9), 0);
+
+	m_pos = VGet(50 + (m_blockX * 9), -10 + (m_blockY * 9), 0);
 	//m_pos = VGet(50 + (15 * i), 0 + (15 * j), 0);
 	// 3Dモデルのスケール決定
 	MV1SetScale(m_modelHandle, VGet(m_scale, m_scale, m_scale));

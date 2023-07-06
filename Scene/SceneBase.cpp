@@ -16,7 +16,7 @@ SceneBase::SceneBase() :
 	m_isBackScene(false)
 {
 }
-
+// フェード更新
 void SceneBase::UpdateFade()
 {
 	m_fadeBright += m_fadeSpeed;
@@ -37,26 +37,26 @@ void SceneBase::UpdateFade()
 		}
 	}
 }
-
+// フェード描画
 void SceneBase::DrawFade() const
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeBright);
 	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
-
+// フェードイン中
 bool SceneBase::IsFadingIn() const
 {
 	if (m_fadeSpeed < 0)	return true;
 	return false;
 }
-
+// フェードアウト中
 bool SceneBase::IsFadingOut() const
 {
 	if (m_fadeSpeed > 0)	return true;
 	return false;
 }
-
+// フェードアウトを行っているかどうか
 void SceneBase::StartFadeOut()
 {
 	m_fadeSpeed = kFadeSpeed;

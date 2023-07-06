@@ -36,5 +36,4 @@ private:
 	 int	m_totalTime;	// アニメーションの総再生時間
 	 float	m_animTime;		// 現在のアニメーションの再生時間
 	 int	m_attachAnimNum;// 再生したいアニメーションの番号
-
 };

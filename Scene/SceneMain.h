@@ -25,5 +25,6 @@ private:
 	BackGround* m_pBack;
 	Camera* m_pCamera;
 
+	int	m_shadowMap;
 };
 

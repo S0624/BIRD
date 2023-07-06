@@ -19,4 +19,8 @@ public:
 
 private:
 	VECTOR	m_pos;			// ポジション
+	
+	//後でけす
+	float test = 0;
+
 };

@@ -11,9 +11,9 @@ SceneManager::SceneManager() :
 // 初期化
 void SceneManager::Init()
 {
-#ifdef false
+#ifdef DEBUG
 	{
-		m_pScene = new SceneCharacterSelect;
+		m_pScene = new SceneTitle;
 	}
 #else
 	{
@@ -36,7 +36,7 @@ void SceneManager::End()
 // 毎フレームの処理
 void SceneManager::Update()
 {
-	Pad::Update();
+	Pad::Update();// パッドの処理の初期化
 
 	assert(m_pScene);// 確認処理
 	if (!m_pScene)	return;

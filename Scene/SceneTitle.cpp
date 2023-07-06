@@ -57,8 +57,9 @@ SceneBase* SceneTitle::Update()
 void SceneTitle::Draw()
 {
 	// 仮背景
-	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
+	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	//m_pPlayer->Draw();
+	DrawString(200, 200, "タイトル", Color::kWhite);
 
 	// フェードの表示
 	SceneBase::DrawFade();

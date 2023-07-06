@@ -14,8 +14,8 @@ public:
 	void Update();			// 更新
 	void Draw();			// 描画
 
-	// テスト用の関数
-	void test(int blockX, int blockY) { testX = blockX; testY = blockY;}
+	//ToDo テスト用の関数
+	void Test(int blockX, int blockY) { m_blockX = blockX; m_blockY = blockY;}
 
 	// モデルハンドルの取得.
 	int GetModelHandle() const { return m_modelHandle; }
@@ -31,8 +31,8 @@ private:
 	const float m_speed;
 	const float m_scale;
 
-	int testX;
-	int testY;
+	int m_blockX;			// ブロックの位置をもらってくる
+	int m_blockY;			// ブロックの位置をもらってくる
 
 };
 
