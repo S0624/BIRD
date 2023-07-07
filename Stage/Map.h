@@ -29,5 +29,6 @@ private:
 	int m_dataRowNum = 0;
 	Stage* m_pStage;
 	Block* m_pBlock;
+	//std::vector<Block*> m_pBlock;
 };
 

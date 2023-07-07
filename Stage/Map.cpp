@@ -11,7 +11,7 @@ Map::Map()
 {
 	m_currentData.clear();
 	m_pStage = new Stage;
-	m_pBlock = new Block;
+	m_pBlock = new Block();
 	m_pStage->Load("Data/Map.fmf");
 }
 
@@ -20,7 +20,16 @@ Map::Map()
 /// </summary>
 Map::~Map()
 {
-
+	delete(m_pStage);
+	delete(m_pBlock);
+	/*m_pBlock.clear();
+	for (const auto& block : m_pBlock)
+	{
+		if (block != nullptr)
+		{
+			delete(block);
+		}
+	}*/
 }
 
 /// <summary>
@@ -53,6 +62,18 @@ void Map::Load()
 void Map::Update()
 {
 	// 処理なし
+	for (int i = 0; i < m_dataColNum; i++)
+	{
+		for (int j = 0; j < m_dataRowNum; j++)
+		{
+			if (m_currentData[i][j] == 1)
+			{
+				m_pBlock->Test(j, i);
+				m_pBlock->Update();
+				//m_pBlock.push_back(block);
+			}
+		}
+	}
 }
 
 /// <summary>
@@ -60,29 +81,19 @@ void Map::Update()
 /// </summary>
 void Map::Draw()
 {
-	//Todo？ なんか動いたけどあってる？？？？あってはないとおもう
-	
-	// 仮で表示
-	//for (const auto& sprite : sprites)
+	// 描画処理
+
+	//for (int i = 0; i < m_dataColNum; i++)
 	//{
-	//	sprite->Draw();
-	//}
-	for (int i = 0; i < m_dataColNum; i++)
-	//for (int i = 0; i < dataColNum; i++)
-	{
-		for (int j = 0; j < m_dataRowNum; j++)
-		//for (int j = 0; j < dataRowNum; j++)
-		{
-			if (m_currentData[i][j] == 1)
-			{
-
-				m_pBlock->Test(j, i);
-				m_pBlock->Update();
+	//	for (int j = 0; j < m_dataRowNum; j++)
+	//	{
+	//		if (m_currentData[i][j] == 1)
+	//		{
 				m_pBlock->Draw();
-			}
+				//m_pBlock.push_back(block);
+	/*		}
 		}
-	}
-
+	}*/
 }
 
 

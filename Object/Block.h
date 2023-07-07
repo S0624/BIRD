@@ -1,5 +1,6 @@
 #pragma once
 #include "../Common.h"
+#include<vector>
 
 /// <summary>
 /// ブロック表示クラス
@@ -15,7 +16,9 @@ public:
 	void Draw();			// 描画
 
 	//ToDo テスト用の関数
-	void Test(int blockX, int blockY) { m_blockX = blockX; m_blockY = blockY;}
+	void Test(int blockX, int blockY);
+	// 画面内にブロックがあるかどうか
+	bool IsExist();
 
 	// モデルハンドルの取得.
 	int GetModelHandle() const { return m_modelHandle; }
@@ -24,9 +27,13 @@ public:
 
 private:
 	int		m_modelHandle;	// モデルハンドル
+	//std::vector<VECTOR>m_pos;
 	VECTOR	m_pos;			// ポジション
 	VECTOR	m_velocity;		// 移動力
 	VECTOR	m_dir;			// 回転方向
+
+	//std::vector<int>m_pBlockX;
+	//std::vector<int>m_pBlockY;
 
 	const float m_speed;
 	const float m_scale;
@@ -34,5 +41,6 @@ private:
 	int m_blockX;			// ブロックの位置をもらってくる
 	int m_blockY;			// ブロックの位置をもらってくる
 
+	bool m_isExist;			//	画面内に存在しているかどうか
 };
 

@@ -28,11 +28,10 @@ Player::Player()
 	m_modelHandle = MV1LoadModel("Data/Model/Bee.mv1");
 	//m_modelHandle = MV1LoadModel("Data/Model/Robot.mv1");
 	assert(m_modelHandle >= 0);
-	m_pos = VGet(0, 0, 0);
+	m_pos = VGet(60, 0, 0);
 	m_velocity = VGet(0, 0, 0);
-	m_dir = VGet(0, 0, 1);
+	m_dir = VGet(0, 0, 0);
 
-	printfDx("%f,%f,%f\n", m_pos.x,m_pos.y, m_pos.z);
 }
 
 /// <summary>
@@ -133,6 +132,10 @@ void Player::Draw()
 {
 	// ３Ｄモデルの描画
 	MV1DrawModel(m_modelHandle);
+
+	//DrawSphere3D(VGet(m_pos.x, m_pos.y + 5, m_pos.z), 10.0f, 5, Color::kWhite, Color::kWhite, true);
+	DrawCapsule3D(VGet(m_pos.x, m_pos.y + 3, m_pos.z), VGet(m_pos.x, m_pos.y + 7, m_pos.z),
+		5.0f, 3, Color::kWhite, Color::kWhite, true);
 
 	// デバッグ描画
 #if _DEBUG

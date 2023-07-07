@@ -17,8 +17,9 @@ void SceneManager::Init()
 	}
 #else
 	{
-		m_pScene = new SceneTitle;
-		//m_pScene = new SceneMain;
+		// デバッグ用にタイトルをすっ飛ばす
+		//m_pScene = new SceneTitle;
+		m_pScene = new SceneMain;
 	}
 #endif
 

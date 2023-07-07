@@ -6,13 +6,11 @@
 
 SceneTitle::SceneTitle()
 {
-	//m_pPlayer = new Player();
-	//m_pCamera = new Camera();
+
 }
 
 SceneTitle::~SceneTitle()
 {
-	//delete(m_pPlayer);
 }
 
 void SceneTitle::Init()
@@ -48,17 +46,12 @@ SceneBase* SceneTitle::Update()
 			StartFadeOut();
 		}
 	}
-	//m_pPlayer->Update();
-	//m_pCamera->Update(*m_pPlayer);
 
 	return this;
 }
 
 void SceneTitle::Draw()
 {
-	// 仮背景
-	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
-	//m_pPlayer->Draw();
 	DrawString(200, 200, "タイトル", Color::kWhite);
 
 	// フェードの表示

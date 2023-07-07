@@ -26,12 +26,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         return -1;            // エラーが起きたら直ちに終了
     }
 
+    // ダブルバッファモード
+    SetDrawScreen(DX_SCREEN_BACK);
+
     SceneManager* pScene;
     pScene = new SceneManager;
     pScene->Init();
-
-    // ダブルバッファモード
-    SetDrawScreen(DX_SCREEN_BACK);
 
     while (ProcessMessage() == 0)
     {

@@ -16,8 +16,7 @@ public:
 	virtual void Draw();
 
 private:
-	//Player* m_pPlayer;
-	//Camera* m_pCamera;
+
 
 };
 

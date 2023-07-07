@@ -1,6 +1,11 @@
 #include "Block.h"
 #include <cassert>
 
+namespace
+{
+	constexpr float kMoveScroll = -0.005f;
+	float kAddScroll = 0.0f;
+}
 
 /// <summary>
 /// コンストラクタ
@@ -10,7 +15,8 @@ Block::Block()
 	m_speed(3.0f),
 	m_scale(0.05f),	// スケール
 	m_blockX(0),
-	m_blockY(0)
+	m_blockY(0),
+	m_isExist(false)
 {
 	// ３Ｄモデルの読み込み
 	m_modelHandle = MV1LoadModel("Data/Model/Block.mv1");
@@ -30,7 +36,7 @@ Block::Block()
 /// </summary>
 Block::~Block()
 {
-	// モデルのアンロード.
+	// モデルのアンロード
 	MV1DeleteModel(m_modelHandle);
 }
 
@@ -39,49 +45,57 @@ Block::~Block()
 /// </summary>
 void Block::Update()
 {
-	//	Pad::update();
-		// これはテスト
-		// のちにプラチナムか何かで外部ファイルを読み込んで対象の場所でブロックを表示させる
-		//int test[5][5] = { {0, 1, 0, 0, 0},
-		//					{1, 0, 0, 1, 0}, 
-		//					{0, 0, 1, 0, 0}, 
-		//					{0, 1, 0, 1, 0}, 
-		//					{0, 0, 0, 0, 0}, };
-		//for (int j = 0; j < 5; j++)
-		//{
-		//	for (int i = 0; i < 5; i++)
-		//	{
-		//		if (test[j][i] == 0)
-		//		{
-					//m_pos = VGet(50 + (testX * 15), Game::kScreenHeight - (testY * 15), 0);
+	//if (IsExist())
+	{
+		// 3Dモデルのスケール決定
+		MV1SetScale(m_modelHandle, VGet(m_scale, m_scale, m_scale));
 
-	m_pos = VGet(50 + (m_blockX * 9), -10 + (m_blockY * 9), 0);
-	//m_pos = VGet(50 + (15 * i), 0 + (15 * j), 0);
-	// 3Dモデルのスケール決定
-	MV1SetScale(m_modelHandle, VGet(m_scale, m_scale, m_scale));
+		// スクロール処理
+		kAddScroll += kMoveScroll;
+		m_pos.x += kAddScroll;
 
-	// ３Dモデルのポジション設定
-	MV1SetPosition(m_modelHandle, m_pos);
+		// ３Dモデルのポジション設定
+		MV1SetPosition(m_modelHandle, m_pos);
 
-	// 回転
-	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
-	// ３Ｄモデルの描画
-	MV1DrawModel(m_modelHandle);
-	//		}
-	//	}
-	//}
-	//// ３Dモデルのポジション設定
-	//MV1SetPosition(m_modelHandle, m_pos);
-	//m_pos.x -= 1.0;
+		// 回転
+		MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	}
 }
 
 /// <summary>
 /// 描画
 /// </summary>
 void Block::Draw()
-{	
-	// ３Ｄモデルの描画
-	MV1DrawModel(m_modelHandle);
+{
+	if (IsExist())
+	{
+		// ３Ｄモデルの描画
+		MV1DrawModel(m_modelHandle);
+		DrawCapsule3D(VGet(m_pos.x, m_pos.y, m_pos.z), VGet(m_pos.x, m_pos.y, m_pos.z),
+			6.0f, 3, Color::kWhite, Color::kGreen, true);
+	}
+}
 
-	//printfDx("%f\n", m_pos.y);
+void Block::Test(int blockX, int blockY)
+{
+	m_blockX = blockX;
+	m_blockY = blockY;
+	//m_pBlockX.push_back(m_blockX);
+	//m_pBlockY.push_back(m_blockY);
+
+	m_pos = VAdd(VGet(50, -10, 0), VGet((m_blockX * 9), (m_blockY * 9), 0));
+}
+
+bool Block::IsExist()
+{
+	m_isExist = true;
+	if (m_pos.x > 0&& m_pos.x < 250)
+	{
+		//m_isExist = true;
+	}
+	else
+	{
+		//m_isExist = false;
+	}
+	return m_isExist;
 }
