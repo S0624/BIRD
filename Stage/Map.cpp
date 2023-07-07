@@ -54,6 +54,16 @@ void Map::Load()
 		}
 		m_currentData.push_back(newColData);
 	}
+	for (int i = 0; i < m_dataColNum; i++)
+	{
+		for (int j = 0; j < m_dataRowNum; j++)
+		{
+			if (m_currentData[i][j] == 1)
+			{
+				m_pBlock->BlockPos(j, i);
+			}
+		}
+	}
 }
 
 /// <summary>
@@ -62,18 +72,7 @@ void Map::Load()
 void Map::Update()
 {
 	// ˆ—‚È‚µ
-	for (int i = 0; i < m_dataColNum; i++)
-	{
-		for (int j = 0; j < m_dataRowNum; j++)
-		{
-			if (m_currentData[i][j] == 1)
-			{
-				m_pBlock->Test(j, i);
-				m_pBlock->Update();
-				//m_pBlock.push_back(block);
-			}
-		}
-	}
+	m_pBlock->Update();
 }
 
 /// <summary>
