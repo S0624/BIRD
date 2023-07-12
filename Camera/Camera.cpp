@@ -37,7 +37,7 @@ Camera::~Camera()
 /// </summary>
 void Camera::Update(const Player& player)
 {
-	VECTOR playerPos = player.GetPos();
+	VECTOR playerPos = player.SetPlayerPos();
 	VECTOR cameraPos = VGet(playerPos.x + 60 ,  40.0f, playerPos.z  - 100.0f);// 縦に追いかけない
 
 	// 注視する視点は、カメラと平行にまっすぐz=0地点

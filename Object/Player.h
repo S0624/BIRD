@@ -2,6 +2,7 @@
 
 #include "../Common.h"
 
+class Block;
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -19,14 +20,19 @@ public:
 
 	// モデルハンドルの取得
 	int GetModelHandle() const { return m_modelHandle; }
+	// プレイヤーの位置の取得
+	const VECTOR& SetPlayerPos() const { return m_pos; }
+	const float SetColRadius()const { return m_colradius; }
 
-	const VECTOR& GetPos() const { return m_pos; }
+
+	//const bool test(bool test) const{ return test; }
 
 private:
 	int		m_modelHandle;	// モデルハンドル
 	VECTOR	m_pos;			// ポジション
 	VECTOR	m_velocity;		// 移動力
 	VECTOR	m_dir;			// 回転方向
+	float   m_colradius;	// 当たり判定に使用する半径の大きさ
 
 	 const float m_speed;
 	 const float m_scale;

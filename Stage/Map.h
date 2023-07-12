@@ -4,6 +4,7 @@
 
 class Block;
 class Stage;
+class Player;
 
 /// <summary>
 /// マップを表示する
@@ -18,6 +19,8 @@ public:
 	void Update();
 	void Draw();
 
+	void ColDetection(const Player& player);
+
 	// マップチップのサイズ
 	//static const float	ChipSize;
 	//static const int	ChipPixelSize;
@@ -28,7 +31,9 @@ private:
 	int m_dataColNum = 0;
 	int m_dataRowNum = 0;
 	Stage* m_pStage;
-	Block* m_pBlock;
-	//std::vector<Block*> m_pBlock;
+	//Block* m_pBlock;
+
+	float   m_colradius;	// 当たり判定に使用する半径の大きさ
+	std::vector<Block*> m_pBlock;
 };
 

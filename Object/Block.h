@@ -2,6 +2,7 @@
 #include "../Common.h"
 #include<vector>
 
+class Player;
 /// <summary>
 /// ブロック表示クラス
 /// </summary>
@@ -16,24 +17,20 @@ public:
 	void Draw();			// 描画
 
 	//ToDo テスト用の関数
-	void Test(int blockX, int blockY);
+	void BlockPos(int blockX, int blockY);
 	// 画面内にブロックがあるかどうか
-	bool IsExist();
+	bool IsExist(int blockNum);
 
-	// モデルハンドルの取得.
+	// モデルハンドルの取得
 	int GetModelHandle() const { return m_modelHandle; }
 
-	const VECTOR& GetPos() const { return m_pos; }
-
+	void ColDetection(const Player& player);
 private:
 	int		m_modelHandle;	// モデルハンドル
-	//std::vector<VECTOR>m_pos;
-	VECTOR	m_pos;			// ポジション
+	std::vector<VECTOR>m_pos;
+	//VECTOR	m_pos;			// ポジション
 	VECTOR	m_velocity;		// 移動力
 	VECTOR	m_dir;			// 回転方向
-
-	//std::vector<int>m_pBlockX;
-	//std::vector<int>m_pBlockY;
 
 	const float m_speed;
 	const float m_scale;
@@ -42,5 +39,8 @@ private:
 	int m_blockY;			// ブロックの位置をもらってくる
 
 	bool m_isExist;			//	画面内に存在しているかどうか
+
+	// Test
+	int m_testColor = 0;
 };
 

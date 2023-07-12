@@ -14,6 +14,7 @@ namespace
 /// </summary>
 Player::Player()
 	: m_modelHandle(-1),
+	m_colradius(5.0f),
 	m_speed(3.0f),
 	//m_scale(0.01f),	// スケール
 	m_scale(0.07f),	// スケール
@@ -133,15 +134,15 @@ void Player::Draw()
 	// ３Ｄモデルの描画
 	MV1DrawModel(m_modelHandle);
 
-	//DrawSphere3D(VGet(m_pos.x, m_pos.y + 5, m_pos.z), 10.0f, 5, Color::kWhite, Color::kWhite, true);
-	DrawCapsule3D(VGet(m_pos.x, m_pos.y + 3, m_pos.z), VGet(m_pos.x, m_pos.y + 7, m_pos.z),
-		5.0f, 3, Color::kWhite, Color::kWhite, true);
-
 	// デバッグ描画
 #if _DEBUG
 	DrawFormatString(400,0,0x00ff00,"Z飛ぶ\nX死亡\nCカメラ--\nAカメラ++");
 	//printfDx("%f %f %f\n", pos.x, pos.y, pos.z);
 	DrawFormatString(400, 100, 0xffffff, "%f,%f,%f", m_pos.x, m_pos.y, m_pos.z);
+
+	//DrawCapsule3D(VGet(m_pos.x, m_pos.y + 3, m_pos.z), VGet(m_pos.x, m_pos.y + 7, m_pos.z),
+	//	m_colradius, 3, Color::kWhite, Color::kWhite, true);
+
 #endif // kWindowMode
 }
 
