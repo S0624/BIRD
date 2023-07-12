@@ -2,6 +2,7 @@
 #include "../Common.h"
 #include<vector>
 
+class Player;
 /// <summary>
 /// ブロック表示クラス
 /// </summary>
@@ -20,11 +21,10 @@ public:
 	// 画面内にブロックがあるかどうか
 	bool IsExist(int blockNum);
 
-	// モデルハンドルの取得.
+	// モデルハンドルの取得
 	int GetModelHandle() const { return m_modelHandle; }
 
-	//const VECTOR& GetPos() const { return m_pos; }
-
+	void ColDetection(const Player& player);
 private:
 	int		m_modelHandle;	// モデルハンドル
 	std::vector<VECTOR>m_pos;
@@ -38,6 +38,9 @@ private:
 	int m_blockX;			// ブロックの位置をもらってくる
 	int m_blockY;			// ブロックの位置をもらってくる
 
-	std::vector<bool>m_isExist;			//	画面内に存在しているかどうか
+	bool m_isExist;			//	画面内に存在しているかどうか
+
+	// Test
+	int m_testColor = 0;
 };
 

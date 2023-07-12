@@ -6,6 +6,8 @@ class Map;
 class BackGround;
 class Camera;
 
+class Block;
+
 class SceneMain :
 	public SceneBase
 {
@@ -24,6 +26,8 @@ private:
 	Map* m_pMap;
 	BackGround* m_pBack;
 	Camera* m_pCamera;
+
+	Block* m_pBlock;
 
 	int	m_shadowMap;
 };

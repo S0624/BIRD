@@ -3,6 +3,7 @@
 #include"../Object/Player.h"
 #include"../Camera/Camera.h"
 #include"../Stage/Map.h"
+#include"../Object/Block.h"
 #include"../Object/BackGround.h"
 
 SceneMain::SceneMain() :
@@ -14,6 +15,8 @@ SceneMain::SceneMain() :
 	m_pBack = new BackGround();
 
 	m_pCamera = new Camera();
+
+	m_pBlock = new Block();
 }
 
 SceneMain::~SceneMain()
@@ -23,6 +26,7 @@ SceneMain::~SceneMain()
 	delete(m_pMap);
 	delete(m_pBack);
 	delete(m_pCamera);
+	delete(m_pBlock);
 }
 
 void SceneMain::Init()
@@ -70,6 +74,8 @@ SceneBase* SceneMain::Update()
 	m_pPlayer->Update();// プレイヤーのアップデート
 	m_pMap->Update();// マップのアップデート
 
+	m_pBlock->ColDetection(*m_pPlayer);
+	m_pMap->ColDetection(*m_pPlayer);
 	return this;
 }
 
