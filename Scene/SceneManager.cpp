@@ -9,8 +9,27 @@ SceneManager::SceneManager() :
 {
 }
 // 初期化
-void SceneManager::Init()
+bool SceneManager::Init()
 {
+	// windowモード設定
+	ChangeWindowMode(Game::kWindowMode);
+
+	// ウインドウ名設定
+	SetMainWindowText(Game::kTitleText);
+
+	// 画面サイズの設定
+	SetGraphMode(Game::kScreenWidth, Game::kScreenHeight, Game::kColorDepth);
+	SetWindowSizeChangeEnableFlag(true);//ウィンドウモードの拡大縮小（サイズ変更）
+	SetAlwaysRunFlag(true);
+
+	if (DxLib_Init() == -1)        // ＤＸライブラリ初期化処理
+	{
+		return -1;            // エラーが起きたら直ちに終了
+	}
+
+	// ダブルバッファモード
+	SetDrawScreen(DX_SCREEN_BACK);
+
 #ifdef DEBUG
 	{
 		m_pScene = new SceneTitle;

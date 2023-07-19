@@ -27,8 +27,6 @@ private:
 	BackGround* m_pBack;
 	Camera* m_pCamera;
 
-	Block* m_pBlock;
-
 	int	m_shadowMap;
 };
 

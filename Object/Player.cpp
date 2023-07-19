@@ -1,8 +1,10 @@
 ﻿#include "Player.h"
+#include"../Util/Model.h"
 #include <cassert>
-
 namespace
 {
+	// モデルのファイル名
+	const char* const kFileName = "Data/Model/Bee.mv1";
 	// 重力
 	constexpr float kGravity = -0.15f;
 	// ジャンプ力
@@ -12,11 +14,11 @@ namespace
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Player::Player()
-	: m_modelHandle(-1),
+Player::Player(): 
+	m_modelHandle(-1),
 	m_colradius(5.0f),
+	m_boxPos(-10.0f),
 	m_speed(3.0f),
-	//m_scale(0.01f),	// スケール
 	m_scale(0.07f),	// スケール
 	m_jumpAcc(0),
 	m_attachIndex(0),
@@ -25,10 +27,10 @@ Player::Player()
 	m_attachAnimNum(2)
 
 {
-	// ３Ｄモデルの読み込み
-	m_modelHandle = MV1LoadModel("Data/Model/Bee.mv1");
-	//m_modelHandle = MV1LoadModel("Data/Model/Robot.mv1");
-	assert(m_modelHandle >= 0);
+	// 3Dモデルの生成
+	m_pModel = std::make_shared<Model>(kFileName);
+	m_pModel->SetAnimation(m_attachAnimNum, true, true);
+
 	m_pos = VGet(60, 0, 0);
 	m_velocity = VGet(0, 0, 0);
 	m_dir = VGet(0, 0, 0);
@@ -40,8 +42,6 @@ Player::Player()
 /// </summary>
 Player::~Player()
 {
-	// モデルのアンロード.
-	MV1DeleteModel(m_modelHandle);
 }
 
 /// <summary>
@@ -49,15 +49,22 @@ Player::~Player()
 /// </summary>
 void Player::Update()
 {
-	PlayAnimation();
+	m_pModel->Update();
+	//PlayAnimation();
 
 	// ジャンプ処理
 	bool isJumping = true;
 	m_jumpAcc += kGravity;
 	m_pos.y += m_jumpAcc;
-	if (m_pos.y < -10.0f)
+	if (m_pos.y < -10.0f || m_pos.y < m_boxPos)
 	{
-		m_pos.y = -10.0f;
+		m_pos.y = m_boxPos;
+		m_jumpAcc = 0.0f;
+		isJumping = false;
+	}
+	if (m_pos.y > 110.0f)
+	{
+		m_pos.y = 110.0f;
 		m_jumpAcc = 0.0f;
 		isJumping = false;
 	}
@@ -87,11 +94,12 @@ void Player::Update()
 	}
 
 	// デバック用
-	else if (Pad::IsTrigger(PAD_INPUT_2))
+	// HACK 死亡処理
+	else if (Pad::IsTrigger(PAD_INPUT_2)|| IsExistPlayer())
 	{
 		m_attachAnimNum = 1;
 		m_animTime = 0.0f;
-		DetachAnimation();
+		m_pModel->ChangeAnimation(m_attachAnimNum, false, true, 4);
 	}
 
 	// ゼロ除算避け
@@ -113,17 +121,12 @@ void Player::Update()
 	}
 
 
-	// HACK あとでモデルクラスを作成して処理をきれいにする
-	
 	// 3Dモデルのスケール決定
-	MV1SetScale(m_modelHandle, VGet(m_scale, m_scale, m_scale));
-
+	m_pModel->SetPos(m_pos);
 	// ３Dモデルのポジション設定
-	MV1SetPosition(m_modelHandle, m_pos);
-
+	m_pModel->SetScale(VGet(m_scale, m_scale, m_scale));
 	// 回転（モデルを横に向かせる）
-	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, DX_PI_F * -0.5, 0.0f));
-
+	m_pModel->SetRot(VGet(0.0f, DX_PI_F * -0.5, 0.0f));;
 }
 
 /// <summary>
@@ -132,38 +135,12 @@ void Player::Update()
 void Player::Draw()
 {
 	// ３Ｄモデルの描画
-	MV1DrawModel(m_modelHandle);
+	m_pModel->Draw();
 
 	// デバッグ描画
 #if _DEBUG
-	DrawFormatString(400,0,0x00ff00,"Z飛ぶ\nX死亡\nCカメラ--\nAカメラ++");
-	//printfDx("%f %f %f\n", pos.x, pos.y, pos.z);
-	DrawFormatString(400, 100, 0xffffff, "%f,%f,%f", m_pos.x, m_pos.y, m_pos.z);
-
-	//DrawCapsule3D(VGet(m_pos.x, m_pos.y + 3, m_pos.z), VGet(m_pos.x, m_pos.y + 7, m_pos.z),
-	//	m_colradius, 3, Color::kWhite, Color::kWhite, true);
+	//DrawFormatString(400,0,0x00ff00,"Z飛ぶ\nX死亡\nCカメラ--\nAカメラ++");
+	//DrawFormatString(400, 100, 0xffffff, "PlayerPos%f,%f,%f", m_pos.x, m_pos.y, m_pos.z);
 
 #endif // kWindowMode
-}
-
-void Player::PlayAnimation()
-{
-	m_animTime += 0.5f;
-	if (m_animTime >= m_totalTime)
-	{
-		m_animTime = 0.0f;
-		m_attachAnimNum = 2;
-		DetachAnimation();
-	}
-
-	MV1SetAttachAnimTime(m_modelHandle, m_attachIndex, m_animTime);
-}
-
-void Player::DetachAnimation()
-{
-	MV1DetachAnim(m_modelHandle, m_attachIndex);
-	// ３Ｄモデルのアニメーションをアタッチする
-	m_attachIndex = MV1AttachAnim(m_modelHandle, m_attachAnimNum, -1, false);
-	// アタッチしたアニメーションの総再生時間を取得する
-	m_totalTime = MV1GetAttachAnimTotalTime(m_modelHandle, m_attachIndex);
 }

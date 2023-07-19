@@ -1,7 +1,10 @@
 #pragma once
+
 #include "../Common.h"
+#include<memory>
 #include<vector>
 
+class Model;
 class Player;
 /// <summary>
 /// ブロック表示クラス
@@ -10,25 +13,29 @@ class Player;
 class Block
 {
 public:
-	Block();				// コンストラクタ
+	// コンストラクタ
+	Block(int modelhnadle, int colindex, int blockX, int blockY);		// モデルのハンドル、使用する当たり判定のフレーム、描画する位置のXとY座標
+
 	~Block();				// デストラクタ
 
+	void Init(){};			// 初期化処理
 	void Update();			// 更新
 	void Draw();			// 描画
 
-	//ToDo テスト用の関数
-	void BlockPos(int blockX, int blockY);
 	// 画面内にブロックがあるかどうか
-	bool IsExist(int blockNum);
+	bool IsExist();
 
-	// モデルハンドルの取得
-	int GetModelHandle() const { return m_modelHandle; }
+	//// モデルハンドルの取得
+	int GetModelHandle() const;
+	int GetCollisionFrameIndex() const;
+	VECTOR GetPos() { return m_pos; }
 
-	void ColDetection(const Player& player);
+	//std::vector<VECTOR> GetPos()const { return m_pos; }
 private:
+	// プレイヤーモデル
+	std::shared_ptr<Model> m_pModel;
 	int		m_modelHandle;	// モデルハンドル
-	std::vector<VECTOR>m_pos;
-	//VECTOR	m_pos;			// ポジション
+	VECTOR	m_pos;			// ポジション
 	VECTOR	m_velocity;		// 移動力
 	VECTOR	m_dir;			// 回転方向
 
@@ -40,7 +47,6 @@ private:
 
 	bool m_isExist;			//	画面内に存在しているかどうか
 
-	// Test
-	int m_testColor = 0;
+	int m_colFrameIndex;	// 使用するフレーム
 };
 

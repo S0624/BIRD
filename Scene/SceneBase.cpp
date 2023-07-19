@@ -40,9 +40,9 @@ void SceneBase::UpdateFade()
 // フェード描画
 void SceneBase::DrawFade() const
 {
-	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeBright);
-	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_fadeBright);
+	DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, m_fadeColor, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 // フェードイン中
 bool SceneBase::IsFadingIn() const

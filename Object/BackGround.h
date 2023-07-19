@@ -2,15 +2,15 @@
 class BackGround
 {
 public:
-	BackGround();
-	~BackGround();
+	BackGround(); // コンストラクタ
+	~BackGround();// デストラクタ
 
-	void Update();
-	void Draw();
+	void Update();// 更新処理
+	void Draw();  // 描画処理
 private:
-	int m_handle1;
-	int m_handle2;
-	int m_scroll1;
-	int m_scroll2;
+	int m_handle;
+	int m_scroll;
+	float m_imgIndexWidth;
+	float m_imgIndexHight;
 };
 

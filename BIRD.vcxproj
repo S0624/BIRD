@@ -141,6 +141,8 @@
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\SceneResult.cpp" />
+    <ClCompile Include="Util\Model.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\Block.cpp" />
     <ClCompile Include="Object\Player.cpp" />
@@ -155,6 +157,8 @@
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Scene\SceneResult.h" />
+    <ClInclude Include="Util\Model.h" />
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\Block.h" />
     <ClInclude Include="Object\Player.h" />

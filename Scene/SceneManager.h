@@ -7,7 +7,7 @@ public:
 	SceneManager();
 	virtual ~SceneManager() {}
 	// ‰Šú‰»
-	void Init();
+	bool Init();
 	// I—¹
 	void End();
 	// –ˆƒtƒŒ[ƒ€‚Ìˆ—

@@ -1,29 +1,27 @@
+#include "SceneResult.h"
 #include"../Common.h"
 #include "SceneTitle.h"
-#include"SceneMain.h"
-#include"../Object/Player.h"
-#include"../Camera/Camera.h"
 
-SceneTitle::SceneTitle()
+SceneResult::SceneResult()
 {
 
 }
 
-SceneTitle::~SceneTitle()
+SceneResult::~SceneResult()
 {
 }
 
-void SceneTitle::Init()
+void SceneResult::Init()
 {
 	m_isFadeOut = IsFadingOut();
 }
 
-void SceneTitle::End()
+void SceneResult::End()
 {
-	
+
 }
 
-SceneBase* SceneTitle::Update()
+SceneBase* SceneResult::Update()
 {
 	// フェードインアウトしている
 	if (IsFading())
@@ -33,7 +31,7 @@ SceneBase* SceneTitle::Update()
 		// フェードアウト終了時
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
-			return (new SceneMain);
+			return (new SceneTitle);
 		}
 	}
 
@@ -50,9 +48,9 @@ SceneBase* SceneTitle::Update()
 	return this;
 }
 
-void SceneTitle::Draw()
+void SceneResult::Draw()
 {
-	DrawString(200, 200, "Bee Jump", Color::kWhite);
+	DrawString(200, 200, "result", Color::kWhite);
 
 	// フェードの表示
 	SceneBase::DrawFade();
