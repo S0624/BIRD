@@ -4,11 +4,12 @@
 class Model
 {
 public:
+	// コンストラクタ
 	// ファイル名を指定してロードを行う
 	Model(const char* fileName);
 	// 指定されたハンドルのモデルをDuplicateして生成する
 	Model(int orgModel);
-
+	// デストラクタ
 	virtual ~Model();
 
 	// 当たり判定設定
@@ -61,10 +62,8 @@ private:
 private:
 	// アニメーションデータのクリア
 	void ClearAnimeData(AnimData& anim);
-
 	// アニメーションの更新
 	void UpdateAnim(AnimData anim, float dt = 0.5f);
-
 	// 現在のアニメーション切り替わり情報からアニメーションのブレンド率を設定する
 	void UpdateAnimeBlendRate();
 
@@ -78,7 +77,7 @@ private:
 	// 当たり判定として使用するフレームのインデックス
 	int m_colFrameIndex;
 
-	// アニメショーン…アニメーションアタッチ番号
+	// アニメーションアタッチ番号
 	AnimData m_animPrev;		// 変更前アニメーション情報
 	AnimData m_animNext;		// 変更後アニメーションデータ
 

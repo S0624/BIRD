@@ -15,6 +15,7 @@ SceneTitle::~SceneTitle()
 
 void SceneTitle::Init()
 {
+	// フェード関係の初期化
 	m_isFadeOut = IsFadingOut();
 }
 

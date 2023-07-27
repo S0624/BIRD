@@ -11,21 +11,27 @@ class GameObject;
 class Player
 {
 public:
-	Player();				// コンストラクタ
-	~Player();				// デストラクタ
+	// コンストラクタ
+	Player();				
+	// デストラクタ
+	~Player();				
 
-	void Init() {};			// 初期化処理
-	void Update();			// 更新
-	void Draw();			// 描画
 
-	// モデルハンドルの取得
-	//int GetModelHandle() const { return m_modelHandle; }
+	// 初期化処理
+	void Init() {};			
+	// 更新
+	void Update();			
+	// 描画
+	void Draw();			
+
 	// プレイヤーの位置の取得
 	const VECTOR& GetPlayerPos() const { return m_pos; }
+	// プレイヤーの当たり判定の取得
 	const float GetCollisionRadius()const { return m_colradius; }
 
-
+	// プレイヤーの生死判定
 	bool IsExistPlayer() { return m_isExist; }
+	// プレイヤーの生死判定
 	bool IsExistPlayer(bool isexist) { return m_isExist = isexist; }
 	// HACK きれいにする
 	int TestBox(int testbox) { return m_boxPos = testbox; }
@@ -42,10 +48,9 @@ private:
 	bool	m_isExist;		// プレイヤーが死亡したかどうか
 	int     m_boxPos;		// 箱の位置によって落ちる場所を変える	
 
-	 const float m_speed;
-	 const float m_scale;
-	 float m_jumpAcc;
-	 
+	 const float m_speed;	// スピードの変更
+	 const float m_scale;	// モデルの大きさ
+	 float       m_jumpAcc;	// ジャンプ
 	 int	m_attachIndex;	// 総時間取得するアニメーションのアタッチ番号
 	 int	m_totalTime;	// アニメーションの総再生時間
 	 float	m_animTime;		// 現在のアニメーションの再生時間

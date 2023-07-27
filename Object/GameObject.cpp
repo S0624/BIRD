@@ -9,7 +9,7 @@ namespace
 	constexpr float kMoveScroll = -1.0f;
 	//float kAddScroll = 0.0f;
 	
-	// 当たり判定の大きさ（仮）
+	// 当たり判定の大きさ
 	constexpr float kColRadius = 6.0f;
 
 	// プレイヤーの位置を受け取る
@@ -22,24 +22,23 @@ namespace
 /// コンストラクタ
 /// </summary>
 GameObject::GameObject(const char* modelhnadle, int objNum, int blockX, int blockY)
-	: m_modelHandle(-1),
-	m_objectNum(objNum),
-	m_speed(3.0f),
+	: m_modelHandle(-1),// ゲームオブジェクトのハンドル
+	m_objectNum(objNum),// オブジェクトの番号
+	m_speed(3.0f),// スクロールのスピード
 	m_scale(0.05f),	// スケール
-	m_blockX(blockX),
-	m_blockY(blockY),
-	m_isExist(false)
+	m_blockX(blockX),// オブジェクトの位置を受け取る
+	m_blockY(blockY),// オブジェクトの位置を受け取る
+	m_isExist(false)// 画面外にオブジェクトが出たかどうかのフラグ
 {
+	// ハンドルを受け取る
 	m_modelHandle = MV1LoadModel(modelhnadle);
 	// 3Dモデルの生成
 	m_pModel = std::make_shared<Model>(m_modelHandle);
-	//m_pModel->SetAnimation(m_animNo, true, true);
+	// 当たり判定の有効化
 	m_pModel->setUseCollision(true, true);
 
-
+	// 位置の初期化
 	m_pos = VAdd(VGet(100.0f, -10.0f, 0.0f), VGet(static_cast<float>(m_blockX * 9), static_cast<float>(m_blockY * 9), 0));
-	m_velocity = VGet(0.0f, 0.0f, 0.0f);
-	m_dir = VGet(0.0f, 0.0f, 1.0f);
 
 }
 
@@ -60,12 +59,13 @@ void GameObject::Update()
 	// スクロール処理
 	m_pos.x += kMoveScroll;
 
-	// 回転
+	// 回転の設定
 	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
 	// 3Dモデルのスケール決定
 	m_pModel->SetScale(VGet(m_scale, m_scale, m_scale));
 	// 回転（モデルを横に向かせる）
 	m_pModel->SetRot(VGet(0.0f, DX_PI_F * -0.5, 0.0f));;
+	// 更新処理
 	m_pModel->Update();
 }
 
@@ -80,30 +80,46 @@ void GameObject::Draw()
 	{
 		// ３Dモデルのポジション設定
 		m_pModel->SetPos(m_pos);
+		// 描画処理
 		m_pModel->Draw();
 	}
 
 }
 
-// 範囲外だったら存在を消す
+/// <summary>
+/// 範囲外だったら存在を消す
+/// </summary>
+/// <returns>m_isExist</returns>
 bool GameObject::IsExist()
 {
+	// オブジェクトの位置が画面外に行ったら
 	if (m_pos.x > 0)
 	{
+		// 存在を消す
 		m_isExist = true;
 	}
 	else
 	{
+		// それ以外は存在する
 		m_isExist = false;
 	}
+	// 現在の存在情報を返す
 	return m_isExist;
 }
 
+/// <summary>
+/// モデルハンドルの取得
+/// </summary>
+/// <returns>m_pModel->GetModelHandle()</returns>
 int GameObject::GetModelHandle() const
 {
 	return m_pModel->GetModelHandle();
 }
 
+/// <summary>
+/// 当たり判定の取得
+/// </summary>
+/// <returns>m_pModel->GetColFrameIndex()</returns>
 int GameObject::GetCollisionFrameIndex() const
 {
 	return m_pModel->GetColFrameIndex();

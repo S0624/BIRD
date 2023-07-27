@@ -4,7 +4,7 @@
 #include<memory>
 #include<vector>
 
-
+// クラスの宣言
 class Model;
 class Player;
 
@@ -38,27 +38,23 @@ public:
 	// 画面内にブロックがあるかどうか
 	bool IsExist();
 
-	//// モデルハンドルの取得
+	// モデルハンドルの取得
 	int GetModelHandle() const;
+	//	当たり判定の取得
 	int GetCollisionFrameIndex() const;
-	VECTOR GetPos() { return m_pos; }
 
 private:
-	// プレイヤーモデル
-	std::shared_ptr<Model> m_pModel;
+	std::shared_ptr<Model> m_pModel;// モデルの表示
 	int		m_modelHandle;	// モデルハンドル
 	VECTOR	m_pos;			// ポジション
-	VECTOR	m_velocity;		// 移動力
-	VECTOR	m_dir;			// 回転方向
 
-	const float m_speed;
-	const float m_scale;
+	const float m_speed;	// スクロールのスピード
+	const float m_scale;	// モデルの大きさ
 
 	int m_blockX;			// ブロックの位置をもらってくる
 	int m_blockY;			// ブロックの位置をもらってくる
 
 	bool m_isExist;			//	画面内に存在しているかどうか
-
-	int m_objectNum;	// 使用するフレーム
+	int m_objectNum;		//  オブジェクトの使用している番号
 };
 

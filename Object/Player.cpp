@@ -15,22 +15,23 @@ namespace
 /// コンストラクタ
 /// </summary>
 Player::Player(): 
-	m_modelHandle(-1),
-	m_colradius(5.0f),
-	m_boxPos(-10.0f),
-	m_speed(3.0f),
+	m_modelHandle(-1),// モデルハンドル
+	m_colradius(5.0f),// 当たり判定に使用する半径の大きさ
+	m_boxPos(-10.0f),// 箱の位置によって落ちる場所を変える	
+	m_speed(3.0f),// スピードの変更
 	m_scale(0.07f),	// スケール
-	m_jumpAcc(0),
-	m_attachIndex(0),
-	m_totalTime(0),
-	m_animTime(0),
-	m_attachAnimNum(2)
+	m_jumpAcc(0),// ジャンプ
+	m_attachIndex(0),// 総時間取得するアニメーションのアタッチ番号
+	m_totalTime(0),// アニメーションの総再生時間
+	m_animTime(0),// 現在のアニメーションの再生時間
+	m_attachAnimNum(2)// 再生したいアニメーションの番号
 
 {
 	// 3Dモデルの生成
 	m_pModel = std::make_shared<Model>(kFileName);
 	m_pModel->SetAnimation(m_attachAnimNum, true, true);
 
+	// 位置、ベロシティ、回転の初期化
 	m_pos = VGet(60, 0, 0);
 	m_velocity = VGet(0, 0, 0);
 	m_dir = VGet(0, 0, 0);
@@ -42,6 +43,8 @@ Player::Player():
 /// </summary>
 Player::~Player()
 {
+	// モデルの削除
+	MV1DeleteModel(m_modelHandle);
 }
 
 /// <summary>
@@ -49,8 +52,8 @@ Player::~Player()
 /// </summary>
 void Player::Update()
 {
+	// 更新処理
 	m_pModel->Update();
-	//PlayAnimation();
 
 	// ジャンプ処理
 	bool isJumping = true;
@@ -136,11 +139,4 @@ void Player::Draw()
 {
 	// ３Ｄモデルの描画
 	m_pModel->Draw();
-
-	// デバッグ描画
-#if _DEBUG
-	//DrawFormatString(400,0,0x00ff00,"Z飛ぶ\nX死亡\nCカメラ--\nAカメラ++");
-	//DrawFormatString(400, 100, 0xffffff, "PlayerPos%f,%f,%f", m_pos.x, m_pos.y, m_pos.z);
-
-#endif // kWindowMode
 }

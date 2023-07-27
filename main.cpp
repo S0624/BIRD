@@ -10,6 +10,7 @@
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
+    // シーンマネージャーの宣言
     SceneManager* pSceneManager;
     pSceneManager = new SceneManager;
     pSceneManager->Init();
@@ -21,8 +22,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         // 画面のクリア
         ClearDrawScreen();
 
-
+        // 更新処理
         pSceneManager->Update();
+        // 描画処理
         pSceneManager->Draw();
         // 裏画面を表画面を入れ替える
         ScreenFlip();
@@ -36,7 +38,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
         }
     }
+    // エンド処理
     pSceneManager->End();
+    // デリート
     delete(pSceneManager);
     DxLib_End();                // ＤＸライブラリ使用の終了処理
 

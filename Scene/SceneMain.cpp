@@ -6,6 +6,9 @@
 #include"../Stage/Map.h"
 #include"../Object/BackGround.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 SceneMain::SceneMain() :
 	m_shadowMap(0)
 {
@@ -16,7 +19,9 @@ SceneMain::SceneMain() :
 
 	m_pCamera = new Camera();
 }
-
+/// <summary>
+/// デストラクタ
+/// </summary>
 SceneMain::~SceneMain()
 {
 	// 削除
@@ -28,7 +33,9 @@ SceneMain::~SceneMain()
 	//// シャドウマップの削除
 	//DeleteShadowMap(m_shadowMap);
 }
-
+/// <summary>
+/// 初期化処理
+/// </summary>
 void SceneMain::Init()
 {
 	m_isFadeOut = IsFadingOut();//フェードの初期化
@@ -38,15 +45,18 @@ void SceneMain::Init()
 	//m_shadowMap = MakeShadowMap(1024, 1024);
 	//SetShadowMapLightDirection(m_shadowMap, GetLightDirection());
 }
-
+/// <summary>
+/// エンド処理
+/// </summary>
 void SceneMain::End()
 {
 	// 今のところ処理なし
 }
-
+/// <summary>
+/// 更新処理
+/// </summary>
 SceneBase* SceneMain::Update()
 {	
-	//m_pBack->Update();
 	m_pCamera->Update(*m_pPlayer);// カメラの初期化
 
 	// フェードインアウトしていなかったら
@@ -57,6 +67,7 @@ SceneBase* SceneMain::Update()
 		// フェードアウト終了時
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
+			// resultSceneに飛ぶ
 			return (new SceneResult);
 		}
 	}
@@ -67,29 +78,28 @@ SceneBase* SceneMain::Update()
 		// フェードアウト開始
 		if (m_pPlayer->IsExistPlayer() || m_pMap->GameClearFlag())
 		{
+			// フェードを開始する
 			//StartFadeOut();
 		}
 	}
 
 
-	m_pPlayer->Update();// プレイヤーのアップデート
+	m_pPlayer->Update(); // プレイヤーの更新処理
+	// プレイヤーが死んでいなかった時に更新処理を行う
 	if (!m_pPlayer->IsExistPlayer())
 	{
-		m_pMap->Update();// マップのアップデート
-		m_pBack->Update();
+		m_pMap->Update(); // マップの更新処理
+		m_pBack->Update(); // 背景の更新処理
  
-		// 当たり判定の情報(Updateで情報を更新する)
-		//MV1SetupCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex(), 8, 8, 8);
-		//MV1RefreshCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex());
 		m_pMap->CollisionDetection(m_pPlayer);
 	}
 	return this;
 }
-
+/// <summary>
+/// 描画処理
+/// </summary>
 void SceneMain::Draw()
 {
-	//DrawBox(0, 0, Game::kScreenWidth, Game::kScreenHeight, Color::kRed, true);
-
 	// デバッグ描画
 #if false
 		//(仮決め)グリッドの表示
@@ -124,9 +134,9 @@ void SceneMain::Draw()
 	//ShadowMap_DrawEnd();
 	//SetUseShadowMap(0, m_shadowMap);
 
-	m_pBack->Draw();
-	m_pMap->Draw();// ステージの表示
-	m_pPlayer->Draw();// プレイヤーの表示
+	m_pBack->Draw();	// 背景の表示
+	m_pMap->Draw();		// ステージの表示
+	m_pPlayer->Draw();	// プレイヤーの表示
 
 	// フェードの表示
 	//SceneBase::DrawFade();
