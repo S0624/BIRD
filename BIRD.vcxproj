@@ -144,7 +144,7 @@
     <ClCompile Include="Scene\SceneResult.cpp" />
     <ClCompile Include="Util\Model.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
-    <ClCompile Include="Object\Block.cpp" />
+    <ClCompile Include="Object\GameObject.cpp" />
     <ClCompile Include="Object\Player.cpp" />
     <ClCompile Include="Scene\SceneMain.cpp" />
     <ClCompile Include="Scene\SceneTitle.cpp" />
@@ -160,7 +160,7 @@
     <ClInclude Include="Scene\SceneResult.h" />
     <ClInclude Include="Util\Model.h" />
     <ClInclude Include="Object\BackGround.h" />
-    <ClInclude Include="Object\Block.h" />
+    <ClInclude Include="Object\GameObject.h" />
     <ClInclude Include="Object\Player.h" />
     <ClInclude Include="Scene\SceneMain.h" />
     <ClInclude Include="Scene\SceneTitle.h" />

@@ -79,8 +79,8 @@ SceneBase* SceneMain::Update()
 		m_pBack->Update();
  
 		// “–‚½‚è”»’è‚Ìî•ñ(Update‚Åî•ñ‚ðXV‚·‚é)
-		MV1SetupCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex(), 8, 8, 8);
-		MV1RefreshCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex());
+		//MV1SetupCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex(), 8, 8, 8);
+		//MV1RefreshCollInfo(m_pMap->GetModelHandle(), m_pMap->GetColFrameIndex());
 		m_pMap->CollisionDetection(m_pPlayer);
 	}
 	return this;

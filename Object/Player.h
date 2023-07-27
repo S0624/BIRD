@@ -4,7 +4,7 @@
 #include<memory>
 
 class Model;
-class Block;
+class GameObject;
 /// <summary>
 /// プレイヤークラス
 /// </summary>
@@ -27,6 +27,7 @@ public:
 
 	bool IsExistPlayer() { return m_isExist; }
 	bool IsExistPlayer(bool isexist) { return m_isExist = isexist; }
+	// HACK きれいにする
 	int TestBox(int testbox) { return m_boxPos = testbox; }
 
 private:

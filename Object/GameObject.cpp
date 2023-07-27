@@ -1,5 +1,4 @@
-#include "Block.h"
-//#include"Player.h"
+#include "GameObject.h"
 #include"../Util/Model.h"
 #include <cassert>
 
@@ -22,15 +21,16 @@ namespace
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Block::Block(int modelhnadle, int colindex, int blockX, int blockY)
-	: m_modelHandle(modelhnadle),
+GameObject::GameObject(const char* modelhnadle, int objNum, int blockX, int blockY)
+	: m_modelHandle(-1),
+	m_objectNum(objNum),
 	m_speed(3.0f),
 	m_scale(0.05f),	// スケール
 	m_blockX(blockX),
 	m_blockY(blockY),
-	m_isExist(false),
-	m_colFrameIndex(colindex)
+	m_isExist(false)
 {
+	m_modelHandle = MV1LoadModel(modelhnadle);
 	// 3Dモデルの生成
 	m_pModel = std::make_shared<Model>(m_modelHandle);
 	//m_pModel->SetAnimation(m_animNo, true, true);
@@ -46,7 +46,7 @@ Block::Block(int modelhnadle, int colindex, int blockX, int blockY)
 /// <summary>
 /// デストラクタ
 /// </summary>
-Block::~Block()
+GameObject::~GameObject()
 {
 	// モデルのアンロード
 	MV1DeleteModel(m_modelHandle);
@@ -55,7 +55,7 @@ Block::~Block()
 /// <summary>
 /// 更新
 /// </summary>
-void Block::Update()
+void GameObject::Update()
 {
 	// スクロール処理
 	m_pos.x += kMoveScroll;
@@ -72,7 +72,7 @@ void Block::Update()
 /// <summary>
 /// 描画
 /// </summary>
-void Block::Draw()
+void GameObject::Draw()
 {
 
 	// 存在していなかったら描画しない
@@ -86,7 +86,7 @@ void Block::Draw()
 }
 
 // 範囲外だったら存在を消す
-bool Block::IsExist()
+bool GameObject::IsExist()
 {
 	if (m_pos.x > 0)
 	{
@@ -99,12 +99,12 @@ bool Block::IsExist()
 	return m_isExist;
 }
 
-int Block::GetModelHandle() const
+int GameObject::GetModelHandle() const
 {
 	return m_pModel->GetModelHandle();
 }
 
-int Block::GetCollisionFrameIndex() const
+int GameObject::GetCollisionFrameIndex() const
 {
 	return m_pModel->GetColFrameIndex();
 }

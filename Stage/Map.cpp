@@ -1,11 +1,14 @@
 #include<vector>
 #include "Map.h"
 #include "Stage.h"
-#include "../Object/Block.h"
+#include "../Object/GameObject.h"
 #include "../Object/Player.h"
 
 namespace
 {
+	// モデルのハンドル
+	const char* const kFieldHandle = "Data/Model/Block.mv1";	// フィールド用のモデル
+	const char* const kFlagHandle = "Data/Model/Flag.mv1";		// 旗用のモデル
 	// 当たり判定として使用するフレームの名前
 	const char* const kCollisionFrameNamu = "BoxCol";
 	// プレイヤーの位置を受け取る
@@ -18,20 +21,16 @@ namespace
 /// コンストラクタ
 /// </summary>
 Map::Map() :
-	m_collisionFrameIndex(0),
+	m_dataColNum(0),
+	m_dataRowNum(0),
 	m_collisionradius(0),
+	m_flagPos(0),
 	m_gameClearFlag(false)
 {	
-	// ３Ｄモデルの読み込み
-	m_modelHandle = MV1LoadModel("Data/Model/Block.mv1");
-
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
 	m_pStage->Load("Data/Map.fmf");
-
-	MV1SetupCollInfo(m_modelHandle, m_collisionFrameIndex, 8, 8, 8);
-	
 }
 
 /// <summary>
@@ -40,7 +39,7 @@ Map::Map() :
 Map::~Map()
 {
 	delete(m_pStage);
-	m_pBlock.clear();
+	m_pObject.clear();
 	
 }
 
@@ -68,11 +67,19 @@ void Map::Load()
 	{
 		for (int j = 0; j < m_dataRowNum; j++)
 		{
-			if (m_currentData[i][j] == 1)
+			if (m_currentData[i][j] == Field)
 			{
-				// ブロッククラスの初期化処理
-				m_pBlock.push_back(std::make_shared<Block>(m_modelHandle, m_collisionFrameIndex, j, i));
-				m_pBlock.back()->Init();
+				// ブロックの初期化処理
+				m_pObject.push_back(std::make_shared<GameObject>(kFieldHandle, Field, j, i));
+				m_pObject.back()->Init();
+			}
+			if (m_currentData[i][j] == Flag)
+			{
+				// ３Ｄモデルの読み込み
+				// フラグの初期化処理
+				m_pObject.push_back(std::make_shared<GameObject>(kFlagHandle, Flag, j, i));
+				m_flagPos = static_cast<int>(m_pObject.size() - 1);
+				m_pObject.back()->Init();
 			}
 		}
 	}
@@ -84,17 +91,17 @@ void Map::Load()
 void Map::Update()
 {
 	// 更新処理
-	for (const auto& block : m_pBlock)
+	for (const auto& obj : m_pObject)
 	{
-		block->Update();
+		obj->Update();
 		// 当たり判定の情報
-		MV1SetupCollInfo(block->GetModelHandle(), block->GetCollisionFrameIndex(), 8, 8, 8);
-		MV1RefreshCollInfo(block->GetModelHandle(), block->GetCollisionFrameIndex());
+		MV1SetupCollInfo(obj->GetModelHandle(), obj->GetCollisionFrameIndex(), 8, 8, 8);
+		MV1RefreshCollInfo(obj->GetModelHandle(), obj->GetCollisionFrameIndex());
 	}
-	if (!m_pBlock[m_pBlock.size() - 1]->IsExist())
+	if (!m_pObject[m_flagPos]->IsExist())
 	{
-		printfDx("ごーる（仮）\n");
 		m_gameClearFlag = true;
+		printfDx("くりあ\n");
 	}
 }
 
@@ -104,9 +111,9 @@ void Map::Update()
 void Map::Draw()
 {
 	// 描画処理
-	for (const auto& block : m_pBlock)
+	for (const auto& obj : m_pObject)
 	{
-		block->Draw();
+		obj->Draw();
 	}
 }
 
@@ -120,18 +127,16 @@ void Map::CollisionDetection(Player* player)
 	// DxLibの関数を利用して当たり判定をとる
 	MV1_COLL_RESULT_POLY_DIM result;// 当たりデータ
 
-	for (const auto& block : m_pBlock)
+	for (const auto& obj : m_pObject)
 	{
-		result = MV1CollCheck_Capsule(block->GetModelHandle(), block->GetCollisionFrameIndex(),
+		result = MV1CollCheck_Capsule(obj->GetModelHandle(), obj->GetCollisionFrameIndex(),
 			VGet(player->GetPlayerPos().x, player->GetPlayerPos().y + 3, player->GetPlayerPos().z),
 			VGet(player->GetPlayerPos().x, player->GetPlayerPos().y + 7, player->GetPlayerPos().z),
 			player->GetCollisionRadius());
 		if (result.HitNum > 0)// 1枚以上のポリゴンと当たっていたらモデルと当たっている判定
 		{
 			player->IsExistPlayer(true);
-			//player->TestBox(block->GetPos().y);
-			//player->TestBox(block->GetPos().y);
-			player->TestBox(result.Dim[1].Position[1].y);
+			player->TestBox(static_cast<int>(result.Dim[1].Position[1].y));
 		}
 		// 当たり判定情報の後始末
 		MV1CollResultPolyDimTerminate(result);

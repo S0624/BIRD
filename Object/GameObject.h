@@ -4,23 +4,36 @@
 #include<memory>
 #include<vector>
 
+
 class Model;
 class Player;
+
 /// <summary>
 /// ブロック表示クラス
 /// </summary>
+enum Object
+{
+	Empty,		// 空
+	Field,		// 床
+	Flag,		// 旗(ゴール)
+};
 
-class Block
+class GameObject
 {
 public:
 	// コンストラクタ
-	Block(int modelhnadle, int colindex, int blockX, int blockY);		// モデルのハンドル、使用する当たり判定のフレーム、描画する位置のXとY座標
+	// モデルのハンドル、使用する当たり判定のフレーム、描画する位置のXとY座標
+	GameObject(const char* modelhnadle, int objNum, int blockX, int blockY);
 
-	~Block();				// デストラクタ
+	// デストラクタ
+	~GameObject();				
 
-	void Init(){};			// 初期化処理
-	void Update();			// 更新
-	void Draw();			// 描画
+	// 初期化処理
+	void Init(){};			
+	// 更新
+	void Update();			
+	// 描画
+	void Draw();		
 
 	// 画面内にブロックがあるかどうか
 	bool IsExist();
@@ -30,7 +43,6 @@ public:
 	int GetCollisionFrameIndex() const;
 	VECTOR GetPos() { return m_pos; }
 
-	//std::vector<VECTOR> GetPos()const { return m_pos; }
 private:
 	// プレイヤーモデル
 	std::shared_ptr<Model> m_pModel;
@@ -47,6 +59,6 @@ private:
 
 	bool m_isExist;			//	画面内に存在しているかどうか
 
-	int m_colFrameIndex;	// 使用するフレーム
+	int m_objectNum;	// 使用するフレーム
 };
 

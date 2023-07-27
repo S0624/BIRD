@@ -6,7 +6,7 @@ class Map;
 class BackGround;
 class Camera;
 
-class Block;
+class GameObject;
 
 class SceneMain :
 	public SceneBase
