@@ -17,7 +17,7 @@ namespace
 Player::Player(): 
 	m_modelHandle(-1),// モデルハンドル
 	m_colradius(5.0f),// 当たり判定に使用する半径の大きさ
-	m_boxPos(-10.0f),// 箱の位置によって落ちる場所を変える	
+	m_dropPos(-10.0f),// 箱の位置によって落ちる場所を変える	
 	m_speed(3.0f),// スピードの変更
 	m_scale(0.07f),	// スケール
 	m_jumpAcc(0),// ジャンプ
@@ -35,6 +35,13 @@ Player::Player():
 	m_pos = VGet(60, 0, 0);
 	m_velocity = VGet(0, 0, 0);
 	m_dir = VGet(0, 0, 0);
+
+	// 回転の設定
+	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	// 3Dモデルのスケール決定
+	m_pModel->SetScale(VGet(m_scale, m_scale, m_scale));
+	// 回転（モデルを横に向かせる）
+	m_pModel->SetRot(VGet(0.0f, DX_PI_F * -0.5, 0.0f));;
 
 }
 
@@ -59,9 +66,9 @@ void Player::Update()
 	bool isJumping = true;
 	m_jumpAcc += kGravity;
 	m_pos.y += m_jumpAcc;
-	if (m_pos.y < -10.0f || m_pos.y < m_boxPos)
+	if (m_pos.y < -10.0f || m_pos.y < m_dropPos)
 	{
-		m_pos.y = m_boxPos;
+		m_pos.y = m_dropPos;
 		m_jumpAcc = 0.0f;
 		isJumping = false;
 	}
@@ -71,39 +78,19 @@ void Player::Update()
 		m_jumpAcc = 0.0f;
 		isJumping = false;
 	}
-	// デバッグ描画
-#if _DEBUG
-	if (Pad::IsTrigger(PAD_INPUT_1))
+
+	if (( !IsExistPlayer() && !m_gameSituation) && Pad::IsTrigger(PAD_INPUT_1))
 	{
 		m_jumpAcc = kJumpPower;
 	}
-	// デバック用で方向移動(後でいらないからけす)
-	m_dir = VGet(0, 0, 0);
-	if (Pad::IsPress(PAD_INPUT_UP))
-	{
-		m_dir = VAdd(m_dir, VGet(0, 1, 0));
-	}
-	else if (Pad::IsPress(PAD_INPUT_DOWN))
-	{
-		m_dir = VAdd(m_dir, VGet(0, -1, 0));
-	}
-	if (Pad::IsPress(PAD_INPUT_RIGHT))
-	{
-		m_dir = VAdd(m_dir, VGet(1, 0, 0));
-	}
-	else if (Pad::IsPress(PAD_INPUT_LEFT))
-	{
-		m_dir = VAdd(m_dir, VGet(-1, 0, 0));
-	}
 
-	// デバック用
-	// HACK 死亡処理
-	else if (Pad::IsTrigger(PAD_INPUT_2)|| IsExistPlayer())
+	if (IsExistPlayer())
 	{
 		m_attachAnimNum = 1;
 		m_animTime = 0.0f;
 		m_pModel->ChangeAnimation(m_attachAnimNum, false, true, 4);
 	}
+
 
 	// ゼロ除算避け
 	if (VSquareSize(m_dir) > 0)
@@ -111,7 +98,6 @@ void Player::Update()
 		// 正規化
 		m_dir = VNorm(m_dir);
 	}
-#endif // kWindowMode
 
 	// ポジションを更新.
 	m_velocity = VScale(m_dir, m_speed);

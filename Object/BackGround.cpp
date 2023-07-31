@@ -6,7 +6,7 @@ BackGround::BackGround() :
     m_imgIndexWidth(800 * 2.0f),
     m_imgIndexHight(450 * 2.0f)
 {
- 	m_handle = LoadGraph("Data/Img/kumo2.png");
+ 	m_handle = LoadGraph("Data/Img/kumo.png");
 	
 }
 

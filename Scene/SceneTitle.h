@@ -1,7 +1,8 @@
 #pragma once
 #include "SceneBase.h"
-//class Player;
-//class Camera;
+
+class BackGround;
+
 class SceneTitle :
     public SceneBase
 {
@@ -16,7 +17,8 @@ public:
 	virtual void Draw();
 
 private:
-
-
+	BackGround* m_pBack;// 背景のポインタ
+	int m_titleHandle;
+	int m_guidefont;	// 下のガイドに使用するフォント
 };
 

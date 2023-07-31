@@ -1,5 +1,6 @@
 #pragma once
 #include <DxLib.h>
+#include<tchar.h>
 #include "Util/game.h"
 #include "Util/Pad.h"
 
@@ -16,3 +17,9 @@ namespace Color
 	const int kYellowGreen = 0x9ACD32;	// ‰©—Î
 	const int kWhite = 0xffffff;		// ”’
 }
+
+namespace font
+{
+	//ƒtƒHƒ“ƒg‚Ì“Ç‚İ‚İ
+	void MyFontPath(const TCHAR* path);
+};

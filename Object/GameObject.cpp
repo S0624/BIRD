@@ -38,8 +38,13 @@ GameObject::GameObject(const char* modelhnadle, int objNum, int blockX, int bloc
 	m_pModel->setUseCollision(true, true);
 
 	// 位置の初期化
-	m_pos = VAdd(VGet(100.0f, -10.0f, 0.0f), VGet(static_cast<float>(m_blockX * 9), static_cast<float>(m_blockY * 9), 0));
-
+	m_pos = VAdd(VGet(250.0f, -10.0f, 0.0f), VGet(static_cast<float>(m_blockX * 9), static_cast<float>(m_blockY * 9), 0));
+	// 回転の設定
+	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	// 3Dモデルのスケール決定
+	m_pModel->SetScale(VGet(m_scale, m_scale, m_scale));
+	// 回転（モデルを横に向かせる）
+	m_pModel->SetRot(VGet(0.0f, DX_PI_F * -0.5, 0.0f));;
 }
 
 /// <summary>

@@ -101,7 +101,6 @@ void Map::Update()
 	if (!m_pObject[m_flagPos]->IsExist())
 	{
 		m_gameClearFlag = true;
-		printfDx("くりあ\n");
 	}
 }
 
@@ -123,7 +122,6 @@ void Map::CollisionDetection(Player* player)
 	player->GetPlayerPos();
 	player->GetCollisionRadius();
 
-	// HACK テスト実装きれいにする
 	// DxLibの関数を利用して当たり判定をとる
 	MV1_COLL_RESULT_POLY_DIM result;// 当たりデータ
 
@@ -133,10 +131,13 @@ void Map::CollisionDetection(Player* player)
 			VGet(player->GetPlayerPos().x, player->GetPlayerPos().y + 3, player->GetPlayerPos().z),
 			VGet(player->GetPlayerPos().x, player->GetPlayerPos().y + 7, player->GetPlayerPos().z),
 			player->GetCollisionRadius());
-		if (result.HitNum > 0)// 1枚以上のポリゴンと当たっていたらモデルと当たっている判定
+		if (obj->GameObjectNum() == Field)
 		{
-			player->IsExistPlayer(true);
-			player->TestBox(static_cast<int>(result.Dim[1].Position[1].y));
+			if (result.HitNum > 0)// 1枚以上のポリゴンと当たっていたらモデルと当たっている判定
+			{
+				player->IsExistPlayer(true);
+				player->PlayerDropPoint(static_cast<int>(result.Dim[1].Position[1].y));
+			}
 		}
 		// 当たり判定情報の後始末
 		MV1CollResultPolyDimTerminate(result);

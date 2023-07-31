@@ -27,13 +27,19 @@ public:
 	// 描画処理
 	virtual void Draw();
 
+	bool Timer();
 private:
 	Player* m_pPlayer;	// プレイヤーのポインタ
 	Map* m_pMap;		// マップのポインタ
 	BackGround* m_pBack;// 背景のポインタ
 	Camera* m_pCamera;	// カメラのポインタ
 
-	// HaCK
+	int m_gamefont;		// カウントダウンなどに使用するフォント
+	int m_guidefont;	// 下のガイドに使用するフォント
+
+	int m_teimer;		// タイマー(始まる前のカウントダウンに使用)
+
+	// TODO シャドウマップを付けようとしてできなかったのであとで追加する
 	int	m_shadowMap;	// シャドウマップ(影)のための変数
 };
 

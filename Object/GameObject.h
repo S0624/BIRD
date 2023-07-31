@@ -42,6 +42,8 @@ public:
 	int GetModelHandle() const;
 	//	“–‚½‚è”»’è‚ÌŽæ“¾
 	int GetCollisionFrameIndex() const;
+	
+	const int GameObjectNum() const { return m_objectNum; }
 
 private:
 	std::shared_ptr<Model> m_pModel;// ƒ‚ƒfƒ‹‚Ì•\Ž¦

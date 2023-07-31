@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene\SceneResult.cpp" />
     <ClCompile Include="Util\Model.cpp" />
