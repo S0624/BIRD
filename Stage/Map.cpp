@@ -30,7 +30,7 @@ Map::Map() :
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
-	m_pStage->Load("Data/Map.fmf");
+	m_pStage->Load("Data/Map2.fmf");
 }
 
 /// <summary>

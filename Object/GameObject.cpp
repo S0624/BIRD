@@ -98,15 +98,19 @@ void GameObject::Draw()
 bool GameObject::IsExist()
 {
 	// オブジェクトの位置が画面外に行ったら
-	if (m_pos.x > 0)
+	if (m_pos.x > 0 && m_pos.x < 380)
 	{
-		// 存在を消す
+		// それ以外は存在する
 		m_isExist = true;
 	}
 	else
 	{
-		// それ以外は存在する
+		// 存在を消す
 		m_isExist = false;
+	}
+	if (m_objectNum == Flag && m_pos.x > 0)
+	{
+		m_isExist = true;
 	}
 	// 現在の存在情報を返す
 	return m_isExist;

@@ -1,6 +1,6 @@
 #include"../Common.h"
 #include "SceneTitle.h"
-#include"SceneMain.h"
+#include"SceneSelect.h"
 #include"../Object/BackGround.h"
 
 SceneTitle::SceneTitle():
@@ -43,7 +43,7 @@ SceneBase* SceneTitle::Update()
 		// フェードアウト終了時
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
-			return (new SceneMain);
+			return (new SceneSelect);
 		}
 	}
 

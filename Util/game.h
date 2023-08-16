@@ -1,8 +1,12 @@
 #pragma once
 namespace Game
 {
+#ifdef _DEBUG
     // ウインドウモード設定
     constexpr bool kWindowMode = true;
+#else // _DEBUG
+    constexpr bool kWindowMode = false;
+#endif
 
     // ウインドウ名
     const char* const kTitleText = "Bee Jump";
