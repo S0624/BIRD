@@ -26,6 +26,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         pSceneManager->Update();
         // •`‰æˆ—
         pSceneManager->Draw();
+
         // — ‰æ–Ê‚ð•\‰æ–Ê‚ð“ü‚ê‘Ö‚¦‚é
         ScreenFlip();
 

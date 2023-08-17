@@ -38,6 +38,8 @@ public:
 	// 画面内にブロックがあるかどうか
 	bool IsExist();
 
+	bool IsDrawFlag();
+
 	// モデルハンドルの取得
 	int GetModelHandle() const;
 	//	当たり判定の取得
@@ -56,7 +58,8 @@ private:
 	int m_blockX;			// ブロックの位置をもらってくる
 	int m_blockY;			// ブロックの位置をもらってくる
 
-	bool m_isExist;			//	画面内に存在しているかどうか
+	bool m_drawRange;		//	描画していい範囲かどうか
+	bool m_isExist;			//	0より小さくないかどうか
 	int m_objectNum;		//  オブジェクトの使用している番号
 };
 

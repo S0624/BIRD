@@ -30,7 +30,7 @@ Map::Map() :
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
-	m_pStage->Load("Data/Map2.fmf");
+	m_pStage->Load("Data/Map3.fmf");
 }
 
 /// <summary>
@@ -98,8 +98,22 @@ void Map::Update()
 		MV1SetupCollInfo(obj->GetModelHandle(), obj->GetCollisionFrameIndex(), 8, 8, 8);
 		MV1RefreshCollInfo(obj->GetModelHandle(), obj->GetCollisionFrameIndex());
 	}
-	if (!m_pObject[m_flagPos]->IsExist())
+
+	// 不必要なオブジェクトの削除処理
+	for (int i = 0; i < m_pObject.size() - 1; i++)
 	{
+		if (!m_pObject[i]->IsExist())
+		{
+			// 存在していなかったら要素を削除
+			m_pObject.erase(m_pObject.begin() + i);
+			m_flagPos -= 1;
+		}
+	}
+
+	// 旗が画面外に言ったらゲームクリア判定にする
+	if (m_flagPos <= 0)
+	{
+		m_flagPos = 0;
 		m_gameClearFlag = true;
 	}
 }

@@ -28,7 +28,8 @@ GameObject::GameObject(const char* modelhnadle, int objNum, int blockX, int bloc
 	m_scale(0.05f),	// スケール
 	m_blockX(blockX),// オブジェクトの位置を受け取る
 	m_blockY(blockY),// オブジェクトの位置を受け取る
-	m_isExist(false)// 画面外にオブジェクトが出たかどうかのフラグ
+	m_isExist(false),//	描画していい範囲かどうか
+	m_drawRange(false)//  オブジェクトの使用している番号
 {
 	// ハンドルを受け取る
 	m_modelHandle = MV1LoadModel(modelhnadle);
@@ -81,7 +82,7 @@ void GameObject::Draw()
 {
 
 	// 存在していなかったら描画しない
-	if (IsExist())
+	if (IsDrawFlag())
 	{
 		// ３Dモデルのポジション設定
 		m_pModel->SetPos(m_pos);
@@ -98,22 +99,25 @@ void GameObject::Draw()
 bool GameObject::IsExist()
 {
 	// オブジェクトの位置が画面外に行ったら
-	if (m_pos.x > 0 && m_pos.x < 380)
+	if (m_pos.x < 0)	{m_isExist = false;}
+	else				{ m_isExist = true; }
+	// 現在の存在情報を返す
+	return m_isExist;
+}
+
+bool GameObject::IsDrawFlag()
+{
+	if (m_pos.x > 0 && m_pos.x < 320)
 	{
 		// それ以外は存在する
-		m_isExist = true;
+		m_drawRange = true;
 	}
 	else
 	{
 		// 存在を消す
-		m_isExist = false;
+		m_drawRange = false;
 	}
-	if (m_objectNum == Flag && m_pos.x > 0)
-	{
-		m_isExist = true;
-	}
-	// 現在の存在情報を返す
-	return m_isExist;
+	return m_drawRange;
 }
 
 /// <summary>

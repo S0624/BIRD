@@ -14,7 +14,7 @@ class SceneMain :
 {
 public:
 	// コンストラクタ
-	SceneMain();
+	SceneMain(int selectNum);
 	// デストラクタ
 	virtual ~SceneMain();
 

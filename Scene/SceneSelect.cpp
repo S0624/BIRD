@@ -49,7 +49,7 @@ SceneBase* SceneSelect::Update()
 		// フェードアウト終了時
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
-			return (new SceneMain);
+			return (new SceneMain(m_cursorNum));
 		}
 	}
 
@@ -59,7 +59,8 @@ SceneBase* SceneSelect::Update()
 		// フェードアウト開始
 		if (Pad::IsTrigger(PAD_INPUT_1))
 		{
-			if (m_cursorNum == 0)
+			// HACK 力業 of 力業なので後で治す
+			if (m_cursorNum != 3)
 			{
 				StartFadeOut();
 			}
@@ -102,7 +103,7 @@ void SceneSelect::Draw()
 	DrawStringToHandle( 1180,
 		Game::kScreenHeight / 2 - 30, "Endless", 0xffffff, m_guidefont);
 
-	if (m_cursorNum != 0)
+	if (m_cursorNum == 3)
 	{
 		DrawStringToHandle((Game::kScreenWidth -
 			GetDrawStringWidthToHandle("じゅんびちゅうだよ", 24, m_guidefont)) / 2,

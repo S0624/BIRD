@@ -10,7 +10,7 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-SceneMain::SceneMain() :
+SceneMain::SceneMain(int selectNum) :
 	m_teimer(60 * 2),
 	m_gamefont(0),
 	m_guidefont(0),
