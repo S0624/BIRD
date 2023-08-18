@@ -153,6 +153,13 @@ void Map::CollisionDetection(Player* player)
 				player->PlayerDropPoint(static_cast<int>(result.Dim[1].Position[1].y));
 			}
 		}
+		else if (obj->GameObjectNum() == Flag)
+		{
+			if (result.HitNum > 0)// 1–‡ˆÈã‚Ìƒ|ƒŠƒSƒ“‚Æ“–‚½‚Á‚Ä‚¢‚½‚çƒ‚ƒfƒ‹‚Æ“–‚½‚Á‚Ä‚¢‚é”»’è
+			{
+				m_gameClearFlag = true;
+			}
+		}
 		// “–‚½‚è”»’èî•ñ‚ÌŒãn––
 		MV1CollResultPolyDimTerminate(result);
 	}
