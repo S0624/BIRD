@@ -144,6 +144,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scene\SceneSelect.cpp" />
     <ClCompile Include="Scene\SceneResult.cpp" />
+    <ClCompile Include="Util\SoundManager.cpp" />
     <ClCompile Include="Util\Model.cpp" />
     <ClCompile Include="Object\BackGround.cpp" />
     <ClCompile Include="Object\GameObject.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Scene\SceneSelect.h" />
     <ClInclude Include="Scene\SceneResult.h" />
+    <ClInclude Include="Util\SoundManager.h" />
     <ClInclude Include="Util\Model.h" />
     <ClInclude Include="Object\BackGround.h" />
     <ClInclude Include="Object\GameObject.h" />

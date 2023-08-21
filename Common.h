@@ -3,6 +3,7 @@
 #include<tchar.h>
 #include "Util/game.h"
 #include "Util/Pad.h"
+#include "Util/SoundManager.h"
 
 namespace Color
 {

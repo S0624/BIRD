@@ -3,6 +3,7 @@
 #include"SceneTitle.h"
 #include"SceneMain.h"
 #include"../Common.h"
+#include "../Util/SoundManager.h"
 
 SceneManager::SceneManager() :
 	m_pScene(nullptr)
@@ -29,6 +30,8 @@ bool SceneManager::Init()
 
 	// ダブルバッファモード
 	SetDrawScreen(DX_SCREEN_BACK);
+	// サウンドをロードする
+	Sound::LoadSound();
 
 #ifdef DEBUG
 	{
@@ -41,7 +44,6 @@ bool SceneManager::Init()
 		//m_pScene = new SceneMain;
 	}
 #endif
-
 	m_pScene->Init();
 }
 // 終了

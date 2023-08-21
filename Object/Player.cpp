@@ -81,6 +81,7 @@ void Player::Update()
 
 	if (( !IsExistPlayer() && !m_gameSituation) && Pad::IsTrigger(PAD_INPUT_1))
 	{
+		Sound::PlaySE(Sound::Jump);
 		m_jumpAcc = kJumpPower;
 	}
 

@@ -20,7 +20,8 @@ namespace
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Map::Map() :
+Map::Map(int selectNum) :
+	m_selectNum(selectNum),
 	m_dataColNum(0),
 	m_dataRowNum(0),
 	m_collisionradius(0),
@@ -30,7 +31,22 @@ Map::Map() :
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
-	m_pStage->Load("Data/Map3.fmf");
+	if (m_selectNum == 0)
+	{
+		m_pStage->Load("Data/Map.fmf");
+	}
+	else if (m_selectNum == 1)
+	{
+		m_pStage->Load("Data/Map2.fmf");
+	}
+	else if (m_selectNum == 2)
+	{
+		m_pStage->Load("Data/Map3.fmf");
+	}
+	else
+	{
+		m_pStage->Load("Data/Map1.fmf");
+	}
 }
 
 /// <summary>
@@ -78,7 +94,7 @@ void Map::Load()
 				// ３Ｄモデルの読み込み
 				// フラグの初期化処理
 				m_pObject.push_back(std::make_shared<GameObject>(kFlagHandle, Flag, j, i));
-				m_flagPos = static_cast<int>(m_pObject.size() - 1);
+				m_flagPos = static_cast<int>(m_pObject.size());
 				m_pObject.back()->Init();
 			}
 		}
@@ -109,11 +125,9 @@ void Map::Update()
 			m_flagPos -= 1;
 		}
 	}
-
 	// 旗が画面外に言ったらゲームクリア判定にする
-	if (m_flagPos <= 0)
+	if (m_pObject.size() <= 3)
 	{
-		m_flagPos = 0;
 		m_gameClearFlag = true;
 	}
 }

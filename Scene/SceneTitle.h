@@ -20,5 +20,6 @@ private:
 	BackGround* m_pBack;// 背景のポインタ
 	int m_titleHandle;
 	int m_guidefont;	// 下のガイドに使用するフォント
+	int m_test;
 };
 

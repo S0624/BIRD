@@ -14,11 +14,12 @@ SceneMain::SceneMain(int selectNum) :
 	m_teimer(60 * 2),
 	m_gamefont(0),
 	m_guidefont(0),
+	m_seFlag(false),
 	m_shadowMap(0)
 {
 	// 初期化関係
 	m_pPlayer = new Player();
-	m_pMap = new Map();
+	m_pMap = new Map(selectNum);
 	m_pBack = new BackGround();
 
 	m_pCamera = new Camera();
@@ -28,6 +29,10 @@ SceneMain::SceneMain(int selectNum) :
 /// </summary>
 SceneMain::~SceneMain()
 {
+	// BGM 停止
+	Sound::StopBGM(Sound::MainBGM);
+	Sound::StopBGM(Sound::GameClear);
+	Sound::StopBGM(Sound::GameOver);
 	// 削除
 	delete(m_pPlayer);
 	delete(m_pMap);
@@ -69,6 +74,7 @@ void SceneMain::End()
 /// </summary>
 SceneBase* SceneMain::Update()
 {	
+	Sound::LoopBGM(Sound::MainBGM);
 	m_pCamera->Update(*m_pPlayer);// カメラの初期化
 
 	m_pPlayer->Update(); // プレイヤーの更新処理
@@ -84,6 +90,23 @@ SceneBase* SceneMain::Update()
 			m_pMap->Update(); // マップの更新処理
 			m_pMap->CollisionDetection(m_pPlayer); // 当たり判定の処理
 		}
+	}
+	else
+	{
+		// BGM 停止
+		Sound::StopBGM(Sound::MainBGM);
+		if (!m_seFlag)
+		{
+			Sound::PlaySE(Sound::GameOver);
+			m_seFlag = true;
+		}
+	}
+	if (m_pMap->GameClearFlag() == true)
+	{
+		// BGM 停止
+		Sound::StopBGM(Sound::MainBGM);
+		// ループ位置を音の先頭から2秒後にセットする
+		Sound::SetLoopBGM(2200,Sound::GameClear);
 	}
 
 	// フェードインアウトしていなかったら
@@ -109,6 +132,7 @@ SceneBase* SceneMain::Update()
 		{
 			if (Pad::IsTrigger(PAD_INPUT_1))
 			{
+				Sound::PlaySE(Sound::Cursor);
 				// フェードを開始する
 				StartFadeOut();
 			}

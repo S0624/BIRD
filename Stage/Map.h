@@ -15,7 +15,7 @@ class Map
 {
 public:
 	// コンストラクタ
-	Map();
+	Map(int selectNum);
 	// デストラクタ
 	~Map();
 
@@ -32,6 +32,7 @@ public:
 	bool GameClearFlag() { return m_gameClearFlag; }
 
 private:
+	int m_selectNum;		// 選んでいる番号
 	std::vector<std::vector<int>> m_currentData;		// 読み込んだデータを一時的に保存する
 	Stage* m_pStage;									// ステージクラスの宣言
 	std::vector<std::shared_ptr<GameObject>> m_pObject;	// オブジェクトクラスの宣言

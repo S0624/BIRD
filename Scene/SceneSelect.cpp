@@ -15,6 +15,8 @@ SceneSelect::SceneSelect() :
 
 SceneSelect::~SceneSelect()
 {
+	// BGM 停止
+	Sound::StopBGM(Sound::SelectBGM);
 	delete(m_pBack);
 	DeleteGraph(m_selectHandle);
 	DeleteGraph(m_frameHandle);
@@ -41,6 +43,8 @@ void SceneSelect::End()
 
 SceneBase* SceneSelect::Update()
 {
+	m_pBack->Update(); // 背景の更新処理
+	Sound::LoopBGM(Sound::SelectBGM);
 	// フェードインアウトしている
 	if (IsFading())
 	{
@@ -59,6 +63,7 @@ SceneBase* SceneSelect::Update()
 		// フェードアウト開始
 		if (Pad::IsTrigger(PAD_INPUT_1))
 		{
+			Sound::PlaySE(Sound::Cursor);
 			// HACK 力業 of 力業なので後で治す
 			if (m_cursorNum != 3)
 			{
@@ -67,10 +72,12 @@ SceneBase* SceneSelect::Update()
 		}
 		if (Pad::IsTrigger(PAD_INPUT_LEFT))
 		{
+			Sound::PlaySE(Sound::PushButton);
 			m_cursorNum--;
 		}
 		if (Pad::IsTrigger(PAD_INPUT_RIGHT))
 		{
+			Sound::PlaySE(Sound::PushButton);
 			m_cursorNum++;
 		}
 		if (m_cursorNum > 3)
@@ -88,7 +95,7 @@ SceneBase* SceneSelect::Update()
 
 void SceneSelect::Draw()
 {
-	//m_pBack->Draw();	// 背景の表示
+	m_pBack->Draw();	// 背景の表示
 
 	// select画面の表示 
 	DrawGraph(0, 0, m_selectHandle, true);
