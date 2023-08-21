@@ -8,7 +8,8 @@ SceneSelect::SceneSelect() :
 	m_selectHandle(0),
 	m_frameHandle(0),
 	m_guidefont(0),
-	m_cursorNum(0)
+	m_cursorNum(0),
+	m_max(2)
 {
 	m_pBack = new BackGround();
 }
@@ -28,7 +29,8 @@ void SceneSelect::Init()
 	// フェード関係の初期化
 	m_isFadeOut = IsFadingOut();
 
-	m_selectHandle = LoadGraph("Data/Img/Select1.png");
+	//m_selectHandle = LoadGraph("Data/Img/Select1.png");
+	m_selectHandle = LoadGraph("Data/Img/Select2.png");
 	m_frameHandle = LoadGraph("Data/Img/SelectFrame1.png");
 
 	// フォントの読み込み
@@ -80,13 +82,13 @@ SceneBase* SceneSelect::Update()
 			Sound::PlaySE(Sound::PushButton);
 			m_cursorNum++;
 		}
-		if (m_cursorNum > 3)
+		if (m_cursorNum > m_max)
 		{
 			m_cursorNum = 0;
 		}
 		if (m_cursorNum < 0)
 		{
-			m_cursorNum = 3;
+			m_cursorNum = m_max;
 		}
 	}
 
@@ -98,27 +100,28 @@ void SceneSelect::Draw()
 	m_pBack->Draw();	// 背景の表示
 
 	// select画面の表示 
-	DrawGraph(0, 0, m_selectHandle, true);
+	//DrawGraph(0, 0, m_selectHandle, true);
+	DrawGraph(m_test, 0, m_selectHandle, true);
 
 	// HACK テスト実装です
-	DrawStringToHandle( 190,
+	DrawStringToHandle( m_test+ 190,
 		Game::kScreenHeight / 2 - 30, "Easy", 0xffffff, m_guidefont);
-	DrawStringToHandle( 500,
+	DrawStringToHandle(m_test + 500,
 		Game::kScreenHeight / 2 - 30, "Normal", 0xffffff, m_guidefont);
-	DrawStringToHandle( 880,
+	DrawStringToHandle(m_test + 880,
 		Game::kScreenHeight / 2 - 30, "Hard", 0xffffff, m_guidefont);
-	DrawStringToHandle( 1180,
-		Game::kScreenHeight / 2 - 30, "Endless", 0xffffff, m_guidefont);
+	//DrawStringToHandle( 1180,
+	//	Game::kScreenHeight / 2 - 30, "Endless", 0xffffff, m_guidefont);
 
-	if (m_cursorNum == 3)
-	{
-		DrawStringToHandle((Game::kScreenWidth -
-			GetDrawStringWidthToHandle("じゅんびちゅうだよ", 24, m_guidefont)) / 2,
-			100, "じゅんびちゅうだよ", 0xff0000, m_guidefont);
-	}
+	//if (m_cursorNum == 3)
+	//{
+	//	DrawStringToHandle((Game::kScreenWidth -
+	//		GetDrawStringWidthToHandle("じゅんびちゅうだよ", 24, m_guidefont)) / 2,
+	//		100, "じゅんびちゅうだよ", 0xff0000, m_guidefont);
+	//}
 
 	//DrawBox(50 + 200 * (1 + m_cursorNum), 200, 50 + 200 * (1 + m_cursorNum) + 300, 200 + 500,0xff0000,false);
-	DrawGraph(116  + (345 * m_cursorNum), 177, m_frameHandle, true);
+	DrawGraph(m_test + 116  + (345 * m_cursorNum), 177, m_frameHandle, true);
 
 	DrawStringToHandle((Game::kScreenWidth -
 		GetDrawStringWidthToHandle("難易度を選んでください", 24, m_guidefont)) / 2,
