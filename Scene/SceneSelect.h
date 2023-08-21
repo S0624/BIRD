@@ -22,5 +22,8 @@ private:
 	int m_guidefont;	// 下のガイドに使用するフォント
 
 	int m_cursorNum;	// カーソルのさしている番号
+	int m_max;
+
+	int m_test = 200;
 };
 
