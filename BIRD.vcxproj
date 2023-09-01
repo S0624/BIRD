@@ -142,6 +142,7 @@
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scene\SceneDebug.cpp" />
     <ClCompile Include="Scene\SceneSelect.cpp" />
     <ClCompile Include="Scene\SceneResult.cpp" />
     <ClCompile Include="Util\SoundManager.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Scene\SceneDebug.h" />
     <ClInclude Include="Scene\SceneSelect.h" />
     <ClInclude Include="Scene\SceneResult.h" />
     <ClInclude Include="Util\SoundManager.h" />

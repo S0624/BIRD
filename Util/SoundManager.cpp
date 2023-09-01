@@ -17,8 +17,8 @@ namespace
 		//"Data/Sound/BGM/Result.mp3",
 
 		// SE
-		"Data/Sound/SE/Cursor.wav",
 		"Data/Sound/SE/Push.wav",
+		"Data/Sound/SE/Cursor.wav",
 		"Data/Sound/SE/Jump.wav",
 		"Data/Sound/SE/GameClear.mp3",
 		"Data/Sound/SE/GameOver.mp3",

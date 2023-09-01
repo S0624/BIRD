@@ -1,7 +1,7 @@
 #include"../Common.h"
 #include "SceneMain.h"
 #include "SceneResult.h"
-#include "SceneTitle.h"
+#include "SceneSelect.h"
 #include"../Object/Player.h"
 #include"../Camera/Camera.h"
 #include"../Stage/Map.h"
@@ -12,14 +12,20 @@
 /// </summary>
 SceneMain::SceneMain(int selectNum) :
 	m_teimer(60 * 2),
+	m_scoreHandle(0),
+	m_guideHandle(0),
+	m_frameHandle(0),
+	m_selectNum(selectNum),
 	m_gamefont(0),
 	m_guidefont(0),
 	m_seFlag(false),
+	m_cursolNum(0),
+	m_scoreCount(0),
 	m_shadowMap(0)
 {
 	// 初期化関係
 	m_pPlayer = new Player();
-	m_pMap = new Map(selectNum);
+	m_pMap = new Map(m_selectNum);
 	m_pBack = new BackGround();
 
 	m_pCamera = new Camera();
@@ -39,6 +45,10 @@ SceneMain::~SceneMain()
 	delete(m_pBack);
 	delete(m_pCamera);
 
+	DeleteGraph(m_scoreHandle);
+	DeleteGraph(m_guideHandle);
+	DeleteGraph(m_frameHandle);
+
 	DeleteFontToHandle(m_gamefont);
 	DeleteFontToHandle(m_guidefont);
 
@@ -52,6 +62,11 @@ void SceneMain::Init()
 {
 	m_isFadeOut = IsFadingOut();//フェードの初期化
 	m_pMap->Load();// マップのロード
+
+	// 画像の読み込み
+	m_scoreHandle = LoadGraph("Data/Img/ScorePlate.png");
+	m_guideHandle = LoadGraph("Data/Img/Main.png");
+	m_frameHandle = LoadGraph("Data/Img/MainFrame.png");
 
 	// フォントの読み込み
 	font::MyFontPath("Data/Font/yosugaraver1_2.ttf");
@@ -87,6 +102,7 @@ SceneBase* SceneMain::Update()
 		// タイマーの表示が終わったら
 		if (Timer())
 		{
+			m_scoreCount++;
 			m_pMap->Update(); // マップの更新処理
 			m_pMap->CollisionDetection(m_pPlayer); // 当たり判定の処理
 		}
@@ -119,7 +135,14 @@ SceneBase* SceneMain::Update()
 		{
 			// resultSceneに飛ぶ
 			//return (new SceneResult);
-			return (new SceneTitle);
+			if (m_cursolNum == 0)
+			{
+				return (new SceneMain(m_selectNum));
+			}
+			else
+			{
+				return (new SceneSelect);
+			}
 		}
 	}
 
@@ -132,12 +155,33 @@ SceneBase* SceneMain::Update()
 		{
 			if (Pad::IsTrigger(PAD_INPUT_1))
 			{
-				Sound::PlaySE(Sound::Cursor);
+				Sound::PlaySE(Sound::PushButton);
 				// フェードを開始する
 				StartFadeOut();
 			}
+			// cursor処理
+			if (Pad::IsTrigger(PAD_INPUT_UP))
+			{
+				Sound::PlaySE(Sound::Cursor);
+				m_cursolNum++;
+			}
+			if (Pad::IsTrigger(PAD_INPUT_DOWN))
+			{
+				Sound::PlaySE(Sound::Cursor);
+				m_cursolNum--;
+			}
 		}
 	}
+	// 範囲外の数字に行かないようにする
+	if (m_cursolNum > 1)
+	{
+		m_cursolNum = 0;
+	}
+	else if (m_cursolNum < 0)
+	{
+		m_cursolNum = 1;
+	}
+
 	return this;
 }
 /// <summary>
@@ -183,26 +227,22 @@ void SceneMain::Draw()
 	m_pMap->Draw();		// ステージの表示
 	m_pPlayer->Draw();	// プレイヤーの表示
 
+	// エンドレスの場合のみスコアを表示する
+	if (m_selectNum == Endless)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);			// ブレンドモードをいじってスコアのパネルを半透明にする
+		// スコア版の表示
+		DrawGraph(25, 25, m_scoreHandle, true);
+		// スコアの表示
+		DrawFormatStringToHandle(100,
+			60, 0x000000, m_gamefont, "%d", m_scoreCount);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);			//通常描画に戻す
+	}
+
 	// クリアとゲームオーバーを出す
 	if (m_pPlayer->IsExistPlayer() || m_pMap->GameClearFlag())
 	{
-		if (m_pMap->GameClearFlag())
-		{
-			// TODO あとで画像化する
-			DrawStringToHandle((Game::kScreenWidth -
-				GetDrawStringWidthToHandle("Game Clear", 16, m_gamefont)) / 2,
-				Game::kScreenHeight / 2, "Game Clear", 0xffdd0d, m_gamefont);
-		}
-		// TODO あとで画像化する
-		else
-		{
-			DrawStringToHandle((Game::kScreenWidth -
-				GetDrawStringWidthToHandle("Game Over", 16, m_gamefont)) / 2,
-				Game::kScreenHeight / 2, "Game Over", 0xff0f0f, m_gamefont);
-		}
-		DrawStringToHandle((Game::kScreenWidth -
-			GetDrawStringWidthToHandle("Aボタンをおしてください", 24, m_guidefont)) / 2,
-			Game::kScreenHeight - 150, "Aボタンをおしてください", 0xff0000, m_guidefont);
+		DrawGuide();
 	}
 	// タイマー
 	if (!Timer())
@@ -228,4 +268,44 @@ bool SceneMain::Timer()
 	}
 
 	return timeFlag;
+}
+
+void SceneMain::DrawGuide()
+{
+	// 説明の画像の表示
+	DrawRectRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight - 230,
+		0, 0,
+		760, 425,
+		1.0f, 0.0f,
+		m_guideHandle, true,
+		false, false);
+	// 選択フレームの画像の表示
+	DrawRectRotaGraph(Game::kScreenWidth / 2, (Game::kScreenHeight - 230) + (210 * m_cursolNum),
+		0, 0,
+		760, 425,
+		1.0f, 0.0f,
+		m_frameHandle, true,
+		false, false);
+
+	if (m_pMap->GameClearFlag())
+	{
+		// TODO あとで画像化する
+		DrawStringToHandle((Game::kScreenWidth -
+			GetDrawStringWidthToHandle("Game Clear", 16, m_gamefont)) / 2,
+			300, "Game Clear", 0xffca6d, m_gamefont);
+
+	}
+	// TODO あとで画像化する
+	else
+	{
+		DrawStringToHandle((Game::kScreenWidth -
+			GetDrawStringWidthToHandle("Game Over", 16, m_gamefont)) / 2,
+			300, "Game Over", 0xff0f0f, m_gamefont);
+	}
+	DrawStringToHandle((Game::kScreenWidth -
+		GetDrawStringWidthToHandle("リトライ ", 24, m_guidefont)) / 2,
+		Game::kScreenHeight - 370, "リトライ ", 0xffffff, m_guidefont);
+	DrawStringToHandle((Game::kScreenWidth -
+		GetDrawStringWidthToHandle("ステージセレクト ", 24, m_guidefont)) / 2,
+		Game::kScreenHeight - 160, "ステージセレクト ", 0xffffff, m_guidefont);
 }

@@ -34,7 +34,34 @@ GameObject::GameObject(const char* modelhnadle, int objNum, int blockX, int bloc
 	// ハンドルを受け取る
 	m_modelHandle = MV1LoadModel(modelhnadle);
 	// 3Dモデルの生成
-	m_pModel = std::make_shared<Model>(m_modelHandle);
+	m_pModel = std::make_shared<Model>(modelhnadle);
+	// 当たり判定の有効化
+	m_pModel->setUseCollision(true, true);
+
+	// 位置の初期化
+	m_pos = VAdd(VGet(250.0f, -10.0f, 0.0f), VGet(static_cast<float>(m_blockX * 9), static_cast<float>(m_blockY * 9), 0));
+	// 回転の設定
+	MV1SetRotationXYZ(m_modelHandle, VGet(0.0f, 0.0f, 0.0f));
+	// 3Dモデルのスケール決定
+	m_pModel->SetScale(VGet(m_scale, m_scale, m_scale));
+	// 回転（モデルを横に向かせる）
+	m_pModel->SetRot(VGet(0.0f, DX_PI_F * -0.5, 0.0f));;
+}
+
+GameObject::GameObject(int modelhnadle, int objNum, int blockX, int blockY)
+	: m_modelHandle(-1),// ゲームオブジェクトのハンドル
+	m_objectNum(objNum),// オブジェクトの番号
+	m_speed(3.0f),// スクロールのスピード
+	m_scale(0.05f),	// スケール
+	m_blockX(blockX),// オブジェクトの位置を受け取る
+	m_blockY(blockY),// オブジェクトの位置を受け取る
+	m_isExist(false),//	描画していい範囲かどうか
+	m_drawRange(false)//  オブジェクトの使用している番号
+{
+	// ハンドルを受け取る
+	//m_modelHandle = MV1LoadModel(modelhnadle);
+	// 3Dモデルの生成
+	m_pModel = std::make_shared<Model>(modelhnadle);
 	// 当たり判定の有効化
 	m_pModel->setUseCollision(true, true);
 
@@ -107,7 +134,7 @@ bool GameObject::IsExist()
 
 bool GameObject::IsDrawFlag()
 {
-	if (m_pos.x > 0 && m_pos.x < 320)
+	if (m_pos.x > 0 && m_pos.x < 250)
 	{
 		// それ以外は存在する
 		m_drawRange = true;

@@ -12,8 +12,8 @@ namespace Sound
 		//ResultBgm,		// ƒŠƒUƒ‹ƒg‰æ–Ê‚ÌBGM
 
 		// SE
-		Cursor,
 		PushButton,
+		Cursor,
 		Jump,
 		GameClear,
 		GameOver,

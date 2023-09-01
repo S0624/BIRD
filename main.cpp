@@ -10,6 +10,9 @@
 // プログラムは WinMain から始まります
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
+    // 使用する Direct3D のバージョンを 9EX に設定
+    SetUseDirect3DVersion(DX_DIRECT3D_9EX);
+
     // シーンマネージャーの宣言
     SceneManager* pSceneManager;
     pSceneManager = new SceneManager;
@@ -26,6 +29,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         pSceneManager->Update();
         // 描画処理
         pSceneManager->Draw();
+
+        //DrawFormatString(100, 0, 0xff0000, "%d", GetDrawCallCount());
 
         // 裏画面を表画面を入れ替える
         ScreenFlip();

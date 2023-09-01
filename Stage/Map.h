@@ -26,6 +26,8 @@ public:
 	// マップの描画
 	void Draw();
 
+	// エンドレスを選択したときに行う処理
+	void SelectEndless();
 	// プレイヤーたちの当たり判定
 	void CollisionDetection(Player* player);
 	// ゲームをクリアしたかのフラグ
@@ -39,7 +41,8 @@ private:
 
 	int m_dataColNum;		// 横の最大数
 	int m_dataRowNum;		// 縦の最大数
-	int m_flagPos;			// 旗の位置を保存する変数
+	int m_max;				// カーソルの選択数の最大数
+	int m_maxRand;			// ランダムな数を生成するときの最大数
 	bool m_gameClearFlag;	// ゲームがクリアしたかの宣言
 	float   m_collisionradius;	// 当たり判定に使5用する半径の大きさ
 };

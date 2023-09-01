@@ -1,6 +1,7 @@
 #include<cassert>
 #include "SceneManager.h"
 #include"SceneTitle.h"
+#include"SceneDebug.h"
 #include"SceneMain.h"
 #include"../Common.h"
 #include "../Util/SoundManager.h"
@@ -33,15 +34,14 @@ bool SceneManager::Init()
 	// サウンドをロードする
 	Sound::LoadSound();
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	{
-		m_pScene = new SceneTitle;
+		// デバッグ用にタイトルをすっ飛ばす
+		m_pScene = new SceneDebug;
 	}
 #else
 	{
-		// デバッグ用にタイトルをすっ飛ばす
 		m_pScene = new SceneTitle;
-		//m_pScene = new SceneMain;
 	}
 #endif
 	m_pScene->Init();

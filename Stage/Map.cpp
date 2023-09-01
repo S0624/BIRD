@@ -25,27 +25,37 @@ Map::Map(int selectNum) :
 	m_dataColNum(0),
 	m_dataRowNum(0),
 	m_collisionradius(0),
-	m_flagPos(0),
+	m_max(1),
+	m_maxRand(3),
 	m_gameClearFlag(false)
 {	
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
-	if (m_selectNum == 0)
+	// Easyを選択
+	if (m_selectNum == Easy)
 	{
-		m_pStage->Load("Data/Map.fmf");
+		m_pStage->Load("Data/Map/Easy.fmf");
 	}
-	else if (m_selectNum == 1)
+	// Normalを選択
+	else if (m_selectNum == Normal)
 	{
-		m_pStage->Load("Data/Map2.fmf");
+		m_pStage->Load("Data/Map/Normal.fmf");
 	}
-	else if (m_selectNum == 2)
+	// Hardを選択
+	else if (m_selectNum == Hard)
 	{
-		m_pStage->Load("Data/Map3.fmf");
+		m_pStage->Load("Data/Map/Hard.fmf");
 	}
+	// Endlessを選択
+	else if (m_selectNum == Endless)
+	{
+		SelectEndless();
+	}
+	// もしそれ以外の数字が選ばれた場合、とりあえずEasyをロードする
 	else
 	{
-		m_pStage->Load("Data/Map1.fmf");
+		m_pStage->Load("Data/Map/Easy.fmf");
 	}
 }
 
@@ -79,14 +89,21 @@ void Map::Load()
 		}
 		m_currentData.push_back(newColData);
 	}
+	// モデルの読み込み処理
+	// 複数個コピーして使用するため最初に一つだけ読み込む
+	m_pObject.push_back(std::make_shared<GameObject>(kFieldHandle, Field, 0, 0));
+	m_pObject.back()->Init();
+	int fieldHandle = m_pObject.back()->GetModelHandle();
 	for (int i = 0; i < m_dataColNum; i++)
 	{
 		for (int j = 0; j < m_dataRowNum; j++)
 		{
 			if (m_currentData[i][j] == Field)
 			{
+				// 同じものはコピーして使う
 				// ブロックの初期化処理
-				m_pObject.push_back(std::make_shared<GameObject>(kFieldHandle, Field, j, i));
+				m_pObject.push_back(std::make_shared<GameObject>(fieldHandle, Field, j, i));
+				//m_pObject.push_back(std::make_shared<GameObject>(kFieldHandle, Field, j, i));
 				m_pObject.back()->Init();
 			}
 			if (m_currentData[i][j] == Flag)
@@ -94,7 +111,6 @@ void Map::Load()
 				// ３Ｄモデルの読み込み
 				// フラグの初期化処理
 				m_pObject.push_back(std::make_shared<GameObject>(kFlagHandle, Flag, j, i));
-				m_flagPos = static_cast<int>(m_pObject.size());
 				m_pObject.back()->Init();
 			}
 		}
@@ -122,14 +138,19 @@ void Map::Update()
 		{
 			// 存在していなかったら要素を削除
 			m_pObject.erase(m_pObject.begin() + i);
-			m_flagPos -= 1;
 		}
 	}
 	// 旗が画面外に言ったらゲームクリア判定にする
-	if (m_pObject.size() <= 3)
+	if (m_pObject.size() <= m_max)
 	{
 		m_gameClearFlag = true;
 	}
+	// endlessの処理
+	if (m_selectNum == Endless && m_pObject[m_pObject.size() - 1]->IsDrawFlag())
+	{
+		SelectEndless();
+	}
+	//printfDx("%d\n", m_pObject.size());
 }
 
 /// <summary>
@@ -142,6 +163,31 @@ void Map::Draw()
 	{
 		obj->Draw();
 	}
+}
+
+void Map::SelectEndless()
+{
+	int random = GetRand(m_maxRand);
+	//printfDx("%d\n", random);
+	switch (random)
+	{
+	case Easy:
+		m_pStage->Load("Data/Map/Random1.fmf");
+		break;
+	case Normal:
+		m_pStage->Load("Data/Map/Random2.fmf");
+		break;
+	case Hard:
+		m_pStage->Load("Data/Map/Random3.fmf");
+		break;
+	case Endless:
+		m_pStage->Load("Data/Map/Random4.fmf");
+		break;
+	default:
+		m_pStage->Load("Data/Map/Random1.fmf");
+		break;
+	}
+	Load();
 }
 
 void Map::CollisionDetection(Player* player)
@@ -161,10 +207,13 @@ void Map::CollisionDetection(Player* player)
 			player->GetCollisionRadius());
 		if (obj->GameObjectNum() == Field)
 		{
-			if (result.HitNum > 0)// 1枚以上のポリゴンと当たっていたらモデルと当たっている判定
+			if (!m_gameClearFlag)
 			{
-				player->IsExistPlayer(true);
-				player->PlayerDropPoint(static_cast<int>(result.Dim[1].Position[1].y));
+				if (result.HitNum > 0)// 1枚以上のポリゴンと当たっていたらモデルと当たっている判定
+				{
+					player->IsExistPlayer(true);
+					player->PlayerDropPoint(static_cast<int>(result.Dim[1].Position[1].y));
+				}
 			}
 		}
 		else if (obj->GameObjectNum() == Flag)

@@ -24,6 +24,7 @@ public:
 	// コンストラクタ
 	// モデルのハンドル、使用する当たり判定のフレーム、描画する位置のXとY座標
 	GameObject(const char* modelhnadle, int objNum, int blockX, int blockY);
+	GameObject(int modelhnadle, int objNum, int blockX, int blockY);
 
 	// デストラクタ
 	~GameObject();				

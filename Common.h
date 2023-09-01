@@ -24,3 +24,12 @@ namespace font
 	//フォントの読み込み
 	void MyFontPath(const TCHAR* path);
 };
+
+// 選ばれた難易度
+enum Mode
+{
+	Easy,		// イージー
+	Normal,		// ノーマル
+	Hard,		// ハード
+	Endless,	// エンドレス
+};
