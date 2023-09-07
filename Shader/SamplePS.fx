@@ -20,10 +20,15 @@ PS_OUTPUT main( PS_INPUT psin )
 
 	texc  = tex2D( sampler0, psin.TexCoords0 ) ; 
 
-	psout.Output.r = texc.b ;
-	psout.Output.g = texc.g ;
-	psout.Output.b = texc.r ;
-	psout.Output.a = texc.a ;
+	//psout.Output.r = texc.b ;
+	//psout.Output.g = texc.g ;
+	//psout.Output.b = texc.r ;
+	//psout.Output.a = texc.a ;
+	
+	psout.Output.r = 0.1f ;
+    psout.Output.g = 0.1f;
+    psout.Output.b = 0.1f;
+	psout.Output.a = 0.1f ;
 	
 	return psout ;
 }

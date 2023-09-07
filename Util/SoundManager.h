@@ -9,7 +9,7 @@ namespace Sound
 		TitleBGM,		// タイトル画面のBGM
 		SelectBGM,		// 選択画面のBGM
 		MainBGM,		// ゲーム画面のBGM
-		//ResultBgm,		// リザルト画面のBGM
+		ResultBGM,		// リザルト画面のBGM
 
 		// SE
 		PushButton,

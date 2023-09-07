@@ -68,7 +68,18 @@ SceneBase* SceneSelect::Update()
 		// フェードアウト終了時
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
+#ifdef true
 			return (new SceneMain(m_cursorNum));
+#endif // true
+			// シーン移行
+			if (m_optinPush)
+			{
+				return (new SceneTitle);
+			}
+			else
+			{
+				return (new SceneMain(m_cursorNum));
+			}
 		}
 	}
 
@@ -80,7 +91,7 @@ SceneBase* SceneSelect::Update()
 		{
 			Sound::PlaySE(Sound::PushButton);
 			// HACK 力業 of 力業なので後で治す
-			if (!m_option)
+			if (!m_option || !m_optinPush)
 			{
 				StartFadeOut();
 			}
@@ -247,13 +258,19 @@ void SceneSelect::CursolOption(int cursol)
 void SceneSelect::OptionDraw()
 {
 
+#ifdef  true // 実装したかったけどいったん非表示
 	DrawStringToHandle((Game::kScreenWidth -
 		GetDrawStringWidthToHandle("Option", 24, m_guidefont)) / 2,
 		Game::kScreenHeight - 170, "Option", 0xffffff, m_guidefont);
-
+#endif
+	DrawStringToHandle((Game::kScreenWidth -
+		GetDrawStringWidthToHandle("Title", 24, m_guidefont)) / 2,
+		Game::kScreenHeight - 170, "Title", 0xffffff, m_guidefont);
 	// optionの表示
+#ifdef  true // 実装したかったけどいったん非表示
 	if (m_optinPush)
 	{
+
 		// HACK なおしたい
 		m_test += 30;
 		if (m_test > 450)
@@ -281,6 +298,7 @@ void SceneSelect::OptionDraw()
 
 		DrawFormatString(0, 0, 0xffffff, "%d", m_optionCursorNum);
 	}
+#endif
 }
 
 void SceneSelect::SelectOptionDraw()

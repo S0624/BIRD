@@ -68,7 +68,7 @@ SceneBase* SceneDebug::Update()
 			}
 			else if (m_cursolNum == 6)
 			{
-				return (new SceneResult);
+				return (new SceneResult(0));
 			}
 			else
 			{

@@ -134,7 +134,11 @@ SceneBase* SceneMain::Update()
 		if (!IsFading() && m_isFadeOut && !m_isBackScene)
 		{
 			// resultSceneに飛ぶ
-			//return (new SceneResult);
+			if (m_selectNum == Endless)
+			{
+				// 移行する際にスコアを渡す
+				return (new SceneResult(m_scoreCount));
+			}
 			if (m_cursolNum == 0)
 			{
 				return (new SceneMain(m_selectNum));
@@ -159,16 +163,20 @@ SceneBase* SceneMain::Update()
 				// フェードを開始する
 				StartFadeOut();
 			}
-			// cursor処理
-			if (Pad::IsTrigger(PAD_INPUT_UP))
+			// エンドレスの場合は強制的にリザルトに移行させるのでこの処理をしない
+			if (m_selectNum != Endless)
 			{
-				Sound::PlaySE(Sound::Cursor);
-				m_cursolNum++;
-			}
-			if (Pad::IsTrigger(PAD_INPUT_DOWN))
-			{
-				Sound::PlaySE(Sound::Cursor);
-				m_cursolNum--;
+				// cursor処理
+				if (Pad::IsTrigger(PAD_INPUT_UP))
+				{
+					Sound::PlaySE(Sound::Cursor);
+					m_cursolNum++;
+				}
+				if (Pad::IsTrigger(PAD_INPUT_DOWN))
+				{
+					Sound::PlaySE(Sound::Cursor);
+					m_cursolNum--;
+				}
 			}
 		}
 	}
@@ -189,30 +197,6 @@ SceneBase* SceneMain::Update()
 /// </summary>
 void SceneMain::Draw()
 {
-	// デバッグ描画
-#if false
-		//(仮決め)グリッドの表示
-		VECTOR startY = VGet(0, 0.0f, -100.0f);		//線の始点
-		VECTOR endY = VGet(0, 0.0f, 100.0f);		//線の終点
-		DrawLine3D(startY, endY, 0x7fffd4);			//あお
-	
-		VECTOR startX = VGet(-100.0f, 0.0f, 0.0f);		//線の始点
-		VECTOR endX = VGet(100.0f, 0.0f, -0.0f);			//線の終点
-		DrawLine3D(startX, endX, 0xdc143c);			//あか
-		float lineSize = 300.0f;
-		// マップチップライン(課題当初のStageData1ColNum個(16)のマップチップをどう配置するか)
-		// プレイヤーの地面をY=0としたいので、その周りを配置し、大体の基準でカメラを決める
-		for (int i = 0; i < 16 + 2; i++)
-		{
-			// X軸とかぶるところはとりあえず描画しない
-			if (i != 1)
-			{
-				float y = 10 * (i - 1); // 一個下のラインからチップが始まる
-				DrawLine3D(VGet(-lineSize, y, 0), VGet(lineSize, y, 0), GetColor(255, 255, 0));
-			}
-		}
-#endif // kWindowMode
-
 	//// シャドウマップへの書き込み
 	//ShadowMap_DrawSetup(m_shadowMap);
 
@@ -273,27 +257,37 @@ bool SceneMain::Timer()
 void SceneMain::DrawGuide()
 {
 	// 説明の画像の表示
-	DrawRectRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight - 230,
-		0, 0,
-		760, 425,
-		1.0f, 0.0f,
-		m_guideHandle, true,
-		false, false);
-	// 選択フレームの画像の表示
-	DrawRectRotaGraph(Game::kScreenWidth / 2, (Game::kScreenHeight - 230) + (210 * m_cursolNum),
-		0, 0,
-		760, 425,
-		1.0f, 0.0f,
-		m_frameHandle, true,
-		false, false);
+	if (m_selectNum != 3)
+	{
+		DrawRectRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight - 230,
+			0, 0,
+			760, 425,
+			1.0f, 0.0f,
+			m_guideHandle, true,
+			false, false);
+		// 選択フレームの画像の表示
+		DrawRectRotaGraph(Game::kScreenWidth / 2, (Game::kScreenHeight - 230) + (210 * m_cursolNum),
+			0, 0,
+			760, 425,
+			1.0f, 0.0f,
+			m_frameHandle, true,
+			false, false);
 
+		DrawStringToHandle((Game::kScreenWidth -
+			GetDrawStringWidthToHandle("リトライ ", 24, m_guidefont)) / 2,
+			Game::kScreenHeight - 370, "リトライ ", 0xffffff, m_guidefont);
+		DrawStringToHandle((Game::kScreenWidth -
+			GetDrawStringWidthToHandle("ステージセレクト ", 24, m_guidefont)) / 2,
+			Game::kScreenHeight - 160, "ステージセレクト ", 0xffffff, m_guidefont);
+	}
+	
+	// ゲームクリア、ゲームオーバーを描画する
 	if (m_pMap->GameClearFlag())
 	{
 		// TODO あとで画像化する
 		DrawStringToHandle((Game::kScreenWidth -
 			GetDrawStringWidthToHandle("Game Clear", 16, m_gamefont)) / 2,
 			300, "Game Clear", 0xffca6d, m_gamefont);
-
 	}
 	// TODO あとで画像化する
 	else
@@ -302,10 +296,4 @@ void SceneMain::DrawGuide()
 			GetDrawStringWidthToHandle("Game Over", 16, m_gamefont)) / 2,
 			300, "Game Over", 0xff0f0f, m_gamefont);
 	}
-	DrawStringToHandle((Game::kScreenWidth -
-		GetDrawStringWidthToHandle("リトライ ", 24, m_guidefont)) / 2,
-		Game::kScreenHeight - 370, "リトライ ", 0xffffff, m_guidefont);
-	DrawStringToHandle((Game::kScreenWidth -
-		GetDrawStringWidthToHandle("ステージセレクト ", 24, m_guidefont)) / 2,
-		Game::kScreenHeight - 160, "ステージセレクト ", 0xffffff, m_guidefont);
 }
