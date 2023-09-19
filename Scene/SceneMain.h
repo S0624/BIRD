@@ -7,6 +7,7 @@ class Map;
 class BackGround;
 class Camera;
 class GameObject;
+class Effect;
 
 // シーンベースクラスを継承してシーンを作成する
 class SceneMain :
@@ -37,11 +38,13 @@ private:
 	Map* m_pMap;		// マップのポインタ
 	BackGround* m_pBack;// 背景のポインタ
 	Camera* m_pCamera;	// カメラのポインタ
+	Effect* m_pEffect;
 
 	int m_scoreHandle;	// スコアを表示するパネル
 	int m_guideHandle;	// クリア、ゲームオーバー時の選択画面
 	int m_frameHandle;	// クリア、ゲームオーバー時のフレーム画像
 	int m_selectNum;	// クリア、ゲームオーバー時の選んだ番号
+	int m_gameHandle;	// クリア、ゲームオーバーの画像
 
 	int m_gamefont;		// カウントダウンなどに使用するフォント
 	int m_guidefont;	// 下のガイドに使用するフォント

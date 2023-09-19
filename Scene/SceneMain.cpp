@@ -6,6 +6,7 @@
 #include"../Camera/Camera.h"
 #include"../Stage/Map.h"
 #include"../Object/BackGround.h"
+#include "../Util/Effect.h"
 
 /// <summary>
 /// コンストラクタ
@@ -20,6 +21,7 @@ SceneMain::SceneMain(int selectNum) :
 	m_guidefont(0),
 	m_seFlag(false),
 	m_cursolNum(0),
+	m_gameHandle(0),
 	m_scoreCount(0),
 	m_shadowMap(0)
 {
@@ -28,6 +30,7 @@ SceneMain::SceneMain(int selectNum) :
 	m_pMap = new Map(m_selectNum);
 	m_pBack = new BackGround();
 
+	//m_pEffect = new Effect;
 	m_pCamera = new Camera();
 }
 /// <summary>
@@ -48,6 +51,7 @@ SceneMain::~SceneMain()
 	DeleteGraph(m_scoreHandle);
 	DeleteGraph(m_guideHandle);
 	DeleteGraph(m_frameHandle);
+	DeleteGraph(m_gameHandle);
 
 	DeleteFontToHandle(m_gamefont);
 	DeleteFontToHandle(m_guidefont);
@@ -67,11 +71,14 @@ void SceneMain::Init()
 	m_scoreHandle = LoadGraph("Data/Img/ScorePlate.png");
 	m_guideHandle = LoadGraph("Data/Img/Main.png");
 	m_frameHandle = LoadGraph("Data/Img/MainFrame.png");
+	m_gameHandle = LoadGraph("Data/Img/GameEndImg.png");
 
 	// フォントの読み込み
 	font::MyFontPath("Data/Font/yosugaraver1_2.ttf");
 	m_gamefont = CreateFontToHandle("yosugara ver12", 100, -1, -1);// 上の表示する文字に使用するフォン
 	m_guidefont = CreateFontToHandle("yosugara ver12", 75, -1, -1);// 上の表示する文字に使用するフォン
+
+	//m_pEffect->Init();
 
 	//// シャドウマップの生成
 	//m_shadowMap = MakeShadowMap(1024, 1024);
@@ -91,7 +98,7 @@ SceneBase* SceneMain::Update()
 {	
 	Sound::LoopBGM(Sound::MainBGM);
 	m_pCamera->Update(*m_pPlayer);// カメラの初期化
-
+	//m_pEffect->Update();
 	m_pPlayer->Update(); // プレイヤーの更新処理
 	// OPTIMIZE ゲームの状態を受け取っている
 	m_pPlayer->GameClearFlag(m_pMap->GameClearFlag());	// ゲームの状態を受け取る
@@ -236,6 +243,7 @@ void SceneMain::Draw()
 			GetDrawStringWidthToHandle("%d", 16, m_gamefont)) / 2,
 			Game::kScreenHeight / 2, 0xff0000, m_gamefont, "%d", m_teimer / 60 + 1);
 	}
+	//m_pEffect->Draw();
 
 	// フェードの表示
 	SceneBase::DrawFade();
@@ -256,6 +264,8 @@ bool SceneMain::Timer()
 
 void SceneMain::DrawGuide()
 {
+	// 切り取る大きさ(乗算する用の変数)
+	int imgY = 0;
 	// 説明の画像の表示
 	if (m_selectNum != 3)
 	{
@@ -284,16 +294,19 @@ void SceneMain::DrawGuide()
 	// ゲームクリア、ゲームオーバーを描画する
 	if (m_pMap->GameClearFlag())
 	{
-		// TODO あとで画像化する
-		DrawStringToHandle((Game::kScreenWidth -
-			GetDrawStringWidthToHandle("Game Clear", 16, m_gamefont)) / 2,
-			300, "Game Clear", 0xffca6d, m_gamefont);
+		imgY = 0;
 	}
 	// TODO あとで画像化する
 	else
 	{
-		DrawStringToHandle((Game::kScreenWidth -
-			GetDrawStringWidthToHandle("Game Over", 16, m_gamefont)) / 2,
-			300, "Game Over", 0xff0f0f, m_gamefont);
+		imgY = 1;		
 	}
+
+	// ゲームクリア、ゲームオーバーの画像を出す
+	DrawRectRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight - (Game::kScreenHeight  - 300),
+		0, 144 * imgY,
+		897, 144,
+		1.0f, 0.0f,
+		m_gameHandle, true,
+		false, false);
 }

@@ -3,7 +3,7 @@
 #include "Stage.h"
 #include "../Object/GameObject.h"
 #include "../Object/Player.h"
-
+#include"../Util/CurrentPlayerMap.h"
 namespace
 {
 	// モデルのハンドル
@@ -21,13 +21,15 @@ namespace
 /// コンストラクタ
 /// </summary>
 Map::Map(int selectNum) :
+	m_pCurrentMap(nullptr),
 	m_selectNum(selectNum),
 	m_dataColNum(0),
 	m_dataRowNum(0),
 	m_collisionradius(0),
 	m_max(1),
 	m_maxRand(3),
-	m_gameClearFlag(false)
+	m_gameClearFlag(false),
+	m_objectPosX(0)
 {	
 	m_currentData.clear();
 	// マップのロード
@@ -65,6 +67,7 @@ Map::Map(int selectNum) :
 Map::~Map()
 {
 	delete(m_pStage);
+	delete(m_pCurrentMap);
 	m_pObject.clear();
 	
 }
@@ -113,7 +116,19 @@ void Map::Load()
 				m_pObject.push_back(std::make_shared<GameObject>(kFlagHandle, Flag, j, i));
 				m_pObject.back()->Init();
 			}
+
+			// オブジェクトの横の最大値を取得するための処理
+			// 今の数値より大きかったら数値を代入する
+			if (m_objectPosX < m_pObject.back()->GetPosX())
+			{
+				m_objectPosX = m_pObject.back()->GetPosX();
+			}
 		}
+	}
+	// エンドレスじゃなかったらミニマップを表示させる
+	if (m_selectNum != Endless)
+	{
+		m_pCurrentMap = new CurrentPlayerMap(m_objectPosX);
 	}
 }
 
@@ -138,6 +153,8 @@ void Map::Update()
 		{
 			// 存在していなかったら要素を削除
 			m_pObject.erase(m_pObject.begin() + i);
+			// 領域をコンテナのサイズまで切り詰める
+			m_pObject.shrink_to_fit();
 		}
 	}
 	// 旗が画面外に言ったらゲームクリア判定にする
@@ -149,6 +166,11 @@ void Map::Update()
 	if (m_selectNum == Endless && m_pObject[m_pObject.size() - 1]->IsDrawFlag())
 	{
 		SelectEndless();
+	}
+	// もしクラスの中身が空じゃなかったら処理をする
+	if (m_pCurrentMap)
+	{
+		m_pCurrentMap->Update();
 	}
 	//printfDx("%d\n", m_pObject.size());
 }
@@ -162,6 +184,11 @@ void Map::Draw()
 	for (const auto& obj : m_pObject)
 	{
 		obj->Draw();
+	}
+	// もしクラスの中身が空じゃなかったら処理をする
+	if (m_pCurrentMap)
+	{
+		m_pCurrentMap->Draw();
 	}
 }
 

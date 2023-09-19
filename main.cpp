@@ -4,7 +4,6 @@
 #include"Stage/Map.h"
 #include"Object/BackGround.h"
 #include"Scene/SceneManager.h"
-
 #include "math.h"
 
 // プログラムは WinMain から始まります
@@ -12,6 +11,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 {
     // 使用する Direct3D のバージョンを 9EX に設定
     SetUseDirect3DVersion(DX_DIRECT3D_9EX);
+    
+    // windowモード設定
+    ChangeWindowMode(Game::kWindowMode);
+    // ウインドウ名設定
+    SetMainWindowText("ゲーム名");
+
+    // 画面サイズの設定
+    SetGraphMode(Game::kScreenWidth, Game::kScreenHeight, Game::kColorDepth);
 
     // シーンマネージャーの宣言
     SceneManager* pSceneManager;
@@ -30,7 +37,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
         // 描画処理
         pSceneManager->Draw();
 
-        //DrawFormatString(100, 0, 0xff0000, "%d", GetDrawCallCount());
+#ifdef  false
+            DrawFormatString(100, 0, 0xff0000, "%d", GetDrawCallCount());
+#endif //  false
 
         // 裏画面を表画面を入れ替える
         ScreenFlip();
@@ -44,6 +53,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_  HINSTANCE hPrevInstance, 
 
         }
     }
+
     // エンド処理
     pSceneManager->End();
     // デリート

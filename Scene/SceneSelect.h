@@ -43,4 +43,3 @@ private:
 	int m_cursorNum;	// カーソルのさしている番号
 	int m_max;			// マックス値の設定
 };
-

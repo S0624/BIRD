@@ -1,6 +1,5 @@
 #pragma once
 #include "SceneBase.h"
-
 class SceneManager
 {
 public:

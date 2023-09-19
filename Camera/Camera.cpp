@@ -8,7 +8,7 @@ Camera::Camera()
 {
 	//奥行0.1～1000までをカメラの描画範囲とする
 	SetCameraNearFar(0.1f, 100.0f);
-	SetCameraPositionAndTarget_UpVecY(VGet(550, 10, 0), VGet(550.0f, 10.0f, 0.0f));
+	SetCameraPositionAndTarget_UpVecY(VGet(120, 40, -100), VGet(120.0f, 40.0f, 0.0f));
 
 	m_pos = VGet(0, 0, 0);
 	
@@ -47,6 +47,4 @@ void Camera::Update(const Player& player)
 
 	// カメラに位置を反映
 	SetCameraPositionAndTarget_UpVecY(m_pos, lookPos);
-
-
 }

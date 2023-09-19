@@ -4,7 +4,6 @@
 #include"SceneMain.h"
 #include"SceneResult.h"
 #include"../Object/BackGround.h"
-
 SceneDebug::SceneDebug() :
 	m_cursolNum(0),
 	m_max(6)
@@ -23,6 +22,7 @@ void SceneDebug::Init()
 {
 	// フェード関係の初期化
 	m_isFadeOut = IsFadingOut();
+
 }
 
 void SceneDebug::End()
@@ -116,6 +116,7 @@ void SceneDebug::Draw()
 {
 	DrawString(50,100,"タイトル\n\nセレクト\n\nEasy\n\nNormal\n\nHard\n\nEnd\n\nresult",0xffffff);
 	DrawBox(15, 90 + (40 * m_cursolNum), 40, 115 + (40 * m_cursolNum), 0xff0000, true);
+
 	// フェードの表示
 	SceneBase::DrawFade();
 }

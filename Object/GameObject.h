@@ -47,6 +47,7 @@ public:
 	int GetCollisionFrameIndex() const;
 	
 	const int GameObjectNum() const { return m_objectNum; }
+	const int GetPosX() const { return m_pos.x; }	// 最大値を取得するために用意
 
 private:
 	std::shared_ptr<Model> m_pModel;// モデルの表示
