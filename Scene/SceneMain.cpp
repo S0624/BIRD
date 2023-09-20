@@ -23,15 +23,16 @@ SceneMain::SceneMain(int selectNum) :
 	m_cursolNum(0),
 	m_gameHandle(0),
 	m_scoreCount(0),
+	m_makeScreen(0),
 	m_shadowMap(0)
 {
 	// 初期化関係
+	m_pCamera = new Camera();
 	m_pPlayer = new Player();
 	m_pMap = new Map(m_selectNum);
 	m_pBack = new BackGround();
 
-	//m_pEffect = new Effect;
-	m_pCamera = new Camera();
+	m_pEffect = new Effect;
 }
 /// <summary>
 /// デストラクタ
@@ -47,6 +48,7 @@ SceneMain::~SceneMain()
 	delete(m_pMap);
 	delete(m_pBack);
 	delete(m_pCamera);
+	//delete(m_pEffect);
 
 	DeleteGraph(m_scoreHandle);
 	DeleteGraph(m_guideHandle);
@@ -78,7 +80,7 @@ void SceneMain::Init()
 	m_gamefont = CreateFontToHandle("yosugara ver12", 100, -1, -1);// 上の表示する文字に使用するフォン
 	m_guidefont = CreateFontToHandle("yosugara ver12", 75, -1, -1);// 上の表示する文字に使用するフォン
 
-	//m_pEffect->Init();
+	m_pEffect->Init();
 
 	//// シャドウマップの生成
 	//m_shadowMap = MakeShadowMap(1024, 1024);
@@ -97,8 +99,8 @@ void SceneMain::End()
 SceneBase* SceneMain::Update()
 {	
 	Sound::LoopBGM(Sound::MainBGM);
-	m_pCamera->Update(*m_pPlayer);// カメラの初期化
-	//m_pEffect->Update();
+	m_pCamera->Update(*m_pPlayer);// カメラの更新処理
+	m_pEffect->Update();
 	m_pPlayer->Update(); // プレイヤーの更新処理
 	// OPTIMIZE ゲームの状態を受け取っている
 	m_pPlayer->GameClearFlag(m_pMap->GameClearFlag());	// ゲームの状態を受け取る
@@ -206,10 +208,6 @@ void SceneMain::Draw()
 {
 	//// シャドウマップへの書き込み
 	//ShadowMap_DrawSetup(m_shadowMap);
-
-	//m_pBack->Draw();
-	//m_pMap->Draw();// ステージの表示
-	//m_pPlayer->Draw();// プレイヤーの表示
 	//// シャドウマップを使用してモデルの描画を行う
 	//ShadowMap_DrawEnd();
 	//SetUseShadowMap(0, m_shadowMap);
@@ -217,6 +215,11 @@ void SceneMain::Draw()
 	m_pBack->Draw();	// 背景の表示
 	m_pMap->Draw();		// ステージの表示
 	m_pPlayer->Draw();	// プレイヤーの表示
+	// エフェクトの実装
+	//SetDrawScreen(m_makeScreen);
+	m_pEffect->Draw();
+	//SetDrawScreen(DX_SCREEN_BACK);			//通常描画に戻す
+	//DrawGraph(0, 0, m_makeScreen, true);
 
 	// エンドレスの場合のみスコアを表示する
 	if (m_selectNum == Endless)
@@ -243,7 +246,6 @@ void SceneMain::Draw()
 			GetDrawStringWidthToHandle("%d", 16, m_gamefont)) / 2,
 			Game::kScreenHeight / 2, 0xff0000, m_gamefont, "%d", m_teimer / 60 + 1);
 	}
-	//m_pEffect->Draw();
 
 	// フェードの表示
 	SceneBase::DrawFade();

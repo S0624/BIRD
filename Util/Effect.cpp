@@ -30,6 +30,7 @@ void Effect::Init()
     // エフェクトのロード
     m_effectHandle = LoadEffekseerEffect("Data/Effect/FireFlower.efk", 1.0f);
     assert(m_effectHandle != -1);
+    m_sampleHandle = LoadGraph("Data/Img/Sample.png");
 }
 
 void Effect::Update()
@@ -56,7 +57,7 @@ void Effect::Update()
 
         }
     }
-
+    //DrawGraph(0, 0, m_sampleHandle, true);
     // エフェクトの更新処理
     UpdateEffekseer3D();
 

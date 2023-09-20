@@ -12,6 +12,7 @@ public:
 	void Draw();
 private:
 	int m_effectHandle;
+	int m_sampleHandle;
 	int m_currentPlayEffect;
 	VECTOR m_pos;
 };

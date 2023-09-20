@@ -57,6 +57,8 @@ private:
 
 	int m_scoreCount;	// スコアをカウントする用の変数
 
+	int m_makeScreen;	// メイクスクリーンをする変数
+
 	// TODO シャドウマップを付けようとしてできなかったのであとで追加する
 	int	m_shadowMap;	// シャドウマップ(影)のための変数
 };

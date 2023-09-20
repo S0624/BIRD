@@ -20,8 +20,8 @@ Camera::Camera()
 	// ポリゴンの裏面を描画しない
 	SetUseBackCulling(true);
 
-	// ダブルバッファモード
-	SetDrawScreen(DX_SCREEN_BACK);
+	//描画先を裏画面にする
+	//SetDrawScreen(DX_SCREEN_BACK);
 }
 
 /// <summary>

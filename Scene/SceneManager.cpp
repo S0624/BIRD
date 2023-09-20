@@ -14,6 +14,9 @@ SceneManager::SceneManager() :
 // 初期化
 bool SceneManager::Init()
 {
+	//描画先を裏画面にする
+	SetDrawScreen(DX_SCREEN_BACK);
+
 	// windowモード設定
 	ChangeWindowMode(Game::kWindowMode);
 
@@ -33,8 +36,6 @@ bool SceneManager::Init()
 	{
 		return -1;
 	}
-	// ダブルバッファモード
-	SetDrawScreen(DX_SCREEN_BACK);
 	// サウンドをロードする
 	Sound::LoadSound();
 
