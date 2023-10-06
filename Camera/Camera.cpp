@@ -21,7 +21,7 @@ Camera::Camera()
 	SetUseBackCulling(true);
 
 	//描画先を裏画面にする
-	//SetDrawScreen(DX_SCREEN_BACK);
+	SetDrawScreen(DX_SCREEN_BACK);
 }
 
 /// <summary>

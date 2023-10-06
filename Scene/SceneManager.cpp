@@ -5,7 +5,7 @@
 #include"SceneMain.h"
 #include"../Common.h"
 #include "../Util/SoundManager.h"
-#include<EffekseerForDXLib.h>
+//#include<EffekseerForDXLib.h>
 
 SceneManager::SceneManager() :
 	m_pScene(nullptr)
@@ -32,17 +32,18 @@ bool SceneManager::Init()
 	{
 		return -1;            // エラーが起きたら直ちに終了
 	}
-	if (Effekseer_Init(8000) == -1)
-	{
-		return -1;
-	}
+	//if (Effekseer_Init(8000) == -1)
+	//{
+	//	return -1;
+	//}
 	// サウンドをロードする
 	Sound::LoadSound();
 
 #ifdef _DEBUG
 	{
 		// デバッグ用にタイトルをすっ飛ばす
-		m_pScene = new SceneDebug;
+		m_pScene = new SceneTitle;
+		//m_pScene = new SceneDebug;
 	}
 #else
 	{
@@ -59,7 +60,7 @@ void SceneManager::End()
 
 	m_pScene->End();// 終了処理
 	delete m_pScene;
-	Effkseer_End();
+	//Effkseer_End();
 
 }
 // 毎フレームの処理

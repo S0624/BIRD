@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include<memory>
+#include <map>
+#include<string>
 #include "../Common.h"
 
 // クラスの宣言
@@ -35,6 +37,7 @@ public:
 	bool GameClearFlag() { return m_gameClearFlag; }
 
 private:
+	std::map <int, const char*> m_mapLoad;
 	int m_selectNum;		// 選んでいる番号
 	std::vector<std::vector<int>> m_currentData;		// 読み込んだデータを一時的に保存する
 	Stage* m_pStage;									// ステージクラスの宣言

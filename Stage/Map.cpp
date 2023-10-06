@@ -1,9 +1,9 @@
-#include<vector>
 #include "Map.h"
 #include "Stage.h"
 #include "../Object/GameObject.h"
 #include "../Object/Player.h"
 #include"../Util/CurrentPlayerMap.h"
+
 namespace
 {
 	// モデルのハンドル
@@ -34,22 +34,16 @@ Map::Map(int selectNum) :
 	m_currentData.clear();
 	// マップのロード
 	m_pStage = new Stage;
-	// Easyを選択
-	if (m_selectNum == Easy)
+
+	m_mapLoad[Easy] = "Data/Map/Easy.fmf" ;
+	m_mapLoad[Normal] =  "Data/Map/Normal.fmf";
+	m_mapLoad[Hard] = "Data/Map/Hard.fmf" ;
+	m_mapLoad[Endless] =  "Data/Map/Normal.fmf" ;
+	
+	if (m_selectNum != Endless)
 	{
-		m_pStage->Load("Data/Map/Easy.fmf");
+		m_pStage->Load(m_mapLoad[m_selectNum]);
 	}
-	// Normalを選択
-	else if (m_selectNum == Normal)
-	{
-		m_pStage->Load("Data/Map/Normal.fmf");
-	}
-	// Hardを選択
-	else if (m_selectNum == Hard)
-	{
-		m_pStage->Load("Data/Map/Hard.fmf");
-	}
-	// Endlessを選択
 	else if (m_selectNum == Endless)
 	{
 		SelectEndless();
@@ -57,7 +51,7 @@ Map::Map(int selectNum) :
 	// もしそれ以外の数字が選ばれた場合、とりあえずEasyをロードする
 	else
 	{
-		m_pStage->Load("Data/Map/Easy.fmf");
+		m_pStage->Load(m_mapLoad[Easy]);
 	}
 }
 
@@ -66,10 +60,10 @@ Map::Map(int selectNum) :
 /// </summary>
 Map::~Map()
 {
+	m_mapLoad.clear();
 	delete(m_pStage);
 	delete(m_pCurrentMap);
 	m_pObject.clear();
-	
 }
 
 /// <summary>
@@ -198,16 +192,16 @@ void Map::SelectEndless()
 	//printfDx("%d\n", random);
 	switch (random)
 	{
-	case Easy:
+	case 0:
 		m_pStage->Load("Data/Map/Random1.fmf");
 		break;
-	case Normal:
+	case 1:
 		m_pStage->Load("Data/Map/Random2.fmf");
 		break;
-	case Hard:
+	case 2:
 		m_pStage->Load("Data/Map/Random3.fmf");
 		break;
-	case Endless:
+	case 3:
 		m_pStage->Load("Data/Map/Random4.fmf");
 		break;
 	default:
