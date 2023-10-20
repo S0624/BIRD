@@ -35,6 +35,7 @@ void SceneTitle::Init()
 {
 	// フェード関係の初期化
 	m_isFadeOut = IsFadingOut();
+	//SetUseASyncLoadFlag(true);	// 非同期読み込みを行いたい
 
 	m_titleHandle = LoadGraph("Data/Img/Title.png");
 
@@ -46,6 +47,8 @@ void SceneTitle::Init()
 	m_frameHandle = LoadGraph("Data/Img/MainFrame.png");
 
 	ShaderInit();
+	//SetUseASyncLoadFlag(false);	// 非同期読み込みを行いたい
+
 }
 
 void SceneTitle::End()
